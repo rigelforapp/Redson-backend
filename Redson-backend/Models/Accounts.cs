@@ -12,7 +12,6 @@ namespace Redson_backend.Models
         public string name { get; set; }
         public string type { get; set; }
         public string phone { get; set; }
-        public string phone2 { get; set; }
 
 
     }
