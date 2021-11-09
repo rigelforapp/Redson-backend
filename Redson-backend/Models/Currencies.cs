@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Redson_backend.Models
 {
-    public class Manufacturer
+    public class Currencies
     {
     }
 }

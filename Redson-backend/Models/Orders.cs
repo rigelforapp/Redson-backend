@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Redson_backend.Models
 {
-    public class WorkOrders
+    public class Orders
     {
     }
 }
