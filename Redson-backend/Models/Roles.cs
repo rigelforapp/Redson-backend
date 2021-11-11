@@ -5,7 +5,7 @@ using System.Threading.Tasks;
 
 namespace Redson_backend.Models
 {
-    public class Roles
+    public class Roles : Base
     {
     }
 }

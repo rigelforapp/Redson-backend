@@ -12,46 +12,46 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class CommentsController : ControllerBase
     {
         private readonly IDataAccessProvider _dataAccessProvider;
 
-        public AccountsController(IDataAccessProvider dataAccessProvider)
+        public CommentsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Comments> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            return _dataAccessProvider.GetCommentsRecords();
         }
 
         [HttpGet("{id}")]
-        public Accounts Details(int id)
+        public Comments Details(int id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetCommentRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Comments comment)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
+                comment.updated_at = DateTime.Now;
+                _dataAccessProvider.AddCommentRecord(comment);
                 return Ok();
             }
             return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Comments comment)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                comment.updated_at = DateTime.Now;
+                _dataAccessProvider.UpdateCommentRecord(comment);
                 return Ok();
             }
             return BadRequest();
@@ -60,16 +60,16 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
+            var comment = _dataAccessProvider.GetCommentRecord(id);
+            if (comment == null)
             {
                 return NotFound();
             }
             else
             {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                comment.updated_at = DateTime.Now;
+                comment.is_deleted = true;
+                _dataAccessProvider.UpdateCommentRecord(comment);
             }
             return Ok();
         }

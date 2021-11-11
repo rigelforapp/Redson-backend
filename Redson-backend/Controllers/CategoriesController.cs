@@ -12,46 +12,46 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class CategoriesController : ControllerBase
     {
         private readonly IDataAccessProvider _dataAccessProvider;
 
-        public AccountsController(IDataAccessProvider dataAccessProvider)
+        public CategoriesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Categories> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            return _dataAccessProvider.GetCategoriesRecords();
         }
 
         [HttpGet("{id}")]
-        public Accounts Details(int id)
+        public Categories Details(int id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetCategoryRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Categories category)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
+                category.updated_at = DateTime.Now;
+                _dataAccessProvider.AddCategoryRecord(category);
                 return Ok();
             }
             return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Categories category)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                category.updated_at = DateTime.Now;
+                _dataAccessProvider.UpdateCategoryRecord(category);
                 return Ok();
             }
             return BadRequest();
@@ -60,16 +60,16 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
+            var category = _dataAccessProvider.GetCategoryRecord(id);
+            if (category == null)
             {
                 return NotFound();
             }
             else
             {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                category.updated_at = DateTime.Now;
+                category.is_deleted = true;
+                _dataAccessProvider.UpdateCategoryRecord(category);
             }
             return Ok();
         }

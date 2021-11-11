@@ -5,7 +5,9 @@ using System.Threading.Tasks;
 
 namespace Redson_backend.Models
 {
-    public class Countries
+    public class Countries : Base
     {
+        public string name { get; set; }
+        public string code { get; set; }
     }
 }

@@ -12,46 +12,46 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class VehiclesController : ControllerBase
     {
         private readonly IDataAccessProvider _dataAccessProvider;
 
-        public AccountsController(IDataAccessProvider dataAccessProvider)
+        public VehiclesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Vehicles> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            return _dataAccessProvider.GetVehiclesRecords();
         }
 
         [HttpGet("{id}")]
-        public Accounts Details(int id)
+        public Vehicles Details(int id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetVehicleRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Vehicles vehicle)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
+                vehicle.updated_at = DateTime.Now;
+                _dataAccessProvider.AddVehicleRecord(vehicle);
                 return Ok();
             }
             return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Vehicles vehicle)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                vehicle.updated_at = DateTime.Now;
+                _dataAccessProvider.UpdateVehicleRecord(vehicle);
                 return Ok();
             }
             return BadRequest();
@@ -60,16 +60,16 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
+            var vehicle = _dataAccessProvider.GetVehicleRecord(id);
+            if (vehicle == null)
             {
                 return NotFound();
             }
             else
             {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                vehicle.updated_at = DateTime.Now;
+                vehicle.is_deleted = true;
+                _dataAccessProvider.UpdateVehicleRecord(vehicle);
             }
             return Ok();
         }

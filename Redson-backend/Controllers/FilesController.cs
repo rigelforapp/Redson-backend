@@ -12,46 +12,46 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class FilesController : ControllerBase
     {
         private readonly IDataAccessProvider _dataAccessProvider;
 
-        public AccountsController(IDataAccessProvider dataAccessProvider)
+        public FilesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Files> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            return _dataAccessProvider.GetFilesRecords();
         }
 
         [HttpGet("{id}")]
-        public Accounts Details(int id)
+        public Files Details(int id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetFileRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Files file)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
+                file.updated_at = DateTime.Now;
+                _dataAccessProvider.AddFileRecord(file);
                 return Ok();
             }
             return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Files file)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                file.updated_at = DateTime.Now;
+                _dataAccessProvider.UpdateFileRecord(file);
                 return Ok();
             }
             return BadRequest();
@@ -60,16 +60,16 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
+            var file = _dataAccessProvider.GetFileRecord(id);
+            if (file == null)
             {
                 return NotFound();
             }
             else
             {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                file.updated_at = DateTime.Now;
+                file.is_deleted = true;
+                _dataAccessProvider.UpdateFileRecord(file);
             }
             return Ok();
         }

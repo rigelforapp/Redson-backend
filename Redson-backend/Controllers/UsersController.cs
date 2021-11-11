@@ -12,46 +12,46 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class UsersController : ControllerBase
     {
         private readonly IDataAccessProvider _dataAccessProvider;
 
-        public AccountsController(IDataAccessProvider dataAccessProvider)
+        public UsersController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Users> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            return _dataAccessProvider.GetUsersRecords();
         }
 
         [HttpGet("{id}")]
-        public Accounts Details(int id)
+        public Users Details(int id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetUserRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Users user)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
+                user.updated_at = DateTime.Now;
+                _dataAccessProvider.AddUserRecord(user);
                 return Ok();
             }
             return BadRequest();
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Users user)
         {
             if (ModelState.IsValid)
             {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                user.updated_at = DateTime.Now;
+                _dataAccessProvider.UpdateUserRecord(user);
                 return Ok();
             }
             return BadRequest();
@@ -60,16 +60,16 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
+            var user = _dataAccessProvider.GetUserRecord(id);
+            if (user == null)
             {
                 return NotFound();
             }
             else
             {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
+                user.updated_at = DateTime.Now;
+                user.is_deleted = true;
+                _dataAccessProvider.UpdateUserRecord(user);
             }
             return Ok();
         }
