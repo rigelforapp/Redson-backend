@@ -7,8 +7,8 @@ namespace Redson_backend.Models
 {
     public class Types : Base
     {
-        public string name { get; set; }
-        public string entity { get; set; }
-        public string account_id { get; set; }
+        public string name { get; set; } = null;
+        public string entity { get; set; } = null;
+        public string account_id { get; set; } = null;
     }
 }

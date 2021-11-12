@@ -19,7 +19,7 @@ namespace Redson_backend.DataAccess
 
         public List<Accounts> GetAccountsRecords()
         {
-            return _context.accounts.Where(e=>e.is_deleted == false).ToList();
+            return _context.accounts.ToList();
         }
 
         public Accounts GetAccountRecord(int id)

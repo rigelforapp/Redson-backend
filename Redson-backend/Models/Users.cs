@@ -7,13 +7,13 @@ namespace Redson_backend.Models
 {
     public class Users : Base
     {
-        public string name { get; set; }
-        public string email { get; set; }
-        public string username { get; set; }
-        public string password { get; set; }
-        public string type { get; set; }
-        public string phone { get; set; }
-        public string session_token { get; set; }
+        public string name { get; set; } = null;
+        public string email { get; set; } = null;
+        public string username { get; set; } = null;
+        public string password { get; set; } = null;
+        public string type { get; set; } = null;
+        public string phone { get; set; } = null;
+        public string session_token { get; set; } = null;
 
     }
 }

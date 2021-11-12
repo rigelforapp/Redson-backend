@@ -7,9 +7,9 @@ namespace Redson_backend.Models
 {
     public class Packages : Base
     {
-        public string number { get; set; }
-        public string name { get; set; }
-        public string description { get; set; }
-        public int account_id { get; set; }
+        public string number { get; set; } = null;
+        public string name { get; set; } = null;
+        public string description { get; set; } = null;
+        public int? account_id { get; set; } = null;
     }
 }

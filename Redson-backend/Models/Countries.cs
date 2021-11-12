@@ -7,7 +7,7 @@ namespace Redson_backend.Models
 {
     public class Countries : Base
     {
-        public string name { get; set; }
-        public string code { get; set; }
+        public string name { get; set; } = null;
+        public string code { get; set; } = null;
     }
 }

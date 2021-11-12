@@ -7,10 +7,10 @@ namespace Redson_backend.Models
 {
     public class Categories : Base
     {
-        public string name { get; set; }
-        public string entity { get; set; }
-        public int parent_category_id { get; set; }
-        public int account_id { get; set; }
-            
+        public string name { get; set; } = null;
+        public string entity { get; set; } = null;
+        public int? parent_category_id { get; set; } = null;
+        public int? account_id { get; set; } = null;
+
     }
 }

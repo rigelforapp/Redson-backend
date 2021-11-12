@@ -30,7 +30,7 @@ namespace Redson_backend.Controllers
         [HttpGet("{id}")]
         public Types Details(int id)
         {
-            return _dataAccessProvider.GetTypesRecord(id);
+            return _dataAccessProvider.GetTypeRecord(id);
         }
 
         [HttpPost]
@@ -39,7 +39,7 @@ namespace Redson_backend.Controllers
             if (ModelState.IsValid)
             {
                 type.updated_at = DateTime.Now;
-                _dataAccessProvider.AddTypesRecord(type);
+                _dataAccessProvider.AddTypeRecord(type);
                 return Ok();
             }
             return BadRequest();
@@ -51,7 +51,7 @@ namespace Redson_backend.Controllers
             if (ModelState.IsValid)
             {
                 type.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateTypesRecord(type);
+                _dataAccessProvider.UpdateTypeRecord(type);
                 return Ok();
             }
             return BadRequest();
@@ -60,7 +60,7 @@ namespace Redson_backend.Controllers
         [HttpDelete("{id}")]
         public IActionResult DeleteConfirmed(int id)
         {
-            var type = _dataAccessProvider.GetTypesRecord(id);
+            var type = _dataAccessProvider.GetTypeRecord(id);
             if (type == null)
             {
                 return NotFound();
@@ -69,7 +69,7 @@ namespace Redson_backend.Controllers
             {
                 type.updated_at = DateTime.Now;
                 type.is_deleted = true;
-                _dataAccessProvider.UpdateTypesRecord(type);
+                _dataAccessProvider.UpdateTypeRecord(type);
             }
             return Ok();
         }
