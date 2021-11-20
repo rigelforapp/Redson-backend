@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class TasksController : ControllerBase
+    public class TasksController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public TasksController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Task";
         }
 
         [HttpGet]
-        public IEnumerable<Tasks> Get()
+        public IEnumerable<Redson_backend.Models.Task> Get()
         {
-            return _dataAccessProvider.GetTasksRecords();
+            return _dataAccessProvider.GetTaskRecords();
         }
 
-        [HttpGet("{id}")]
-        public Tasks Details(int id)
+        [HttpGet("{Id}")]
+        public Redson_backend.Models.Task Details(int id)
         {
             return _dataAccessProvider.GetTaskRecord(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Tasks task)
+        public IActionResult Create([FromBody] Redson_backend.Models.Task task)
         {
-            if (ModelState.IsValid)
-            {
-                task.updated_at = DateTime.Now;
-                _dataAccessProvider.AddTaskRecord(task);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(task);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Tasks task)
+        public IActionResult Edit([FromBody] Redson_backend.Models.Task task)
         {
-            if (ModelState.IsValid)
-            {
-                task.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateTaskRecord(task);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var task = _dataAccessProvider.GetTaskRecord(id);
-            if (task == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                task.updated_at = DateTime.Now;
-                task.is_deleted = true;
-                _dataAccessProvider.UpdateTaskRecord(task);
-            }
-            return Ok();
+            return UpdateEntity(task);
         }
 
     }

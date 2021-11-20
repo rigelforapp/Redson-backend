@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class OrderItemsController : ControllerBase
+    public class OrderItemsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public OrderItemsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "OrderItem";
         }
 
         [HttpGet]
-        public IEnumerable<OrderItems> Get()
+        public IEnumerable<OrderItem> Get()
         {
-            return _dataAccessProvider.GetOrderItemsRecords();
+            return _dataAccessProvider.GetOrderItemRecords();
         }
 
-        [HttpGet("{id}")]
-        public OrderItems Details(int id)
+        [HttpGet("{Id}")]
+        public OrderItem Details(int Id)
         {
-            return _dataAccessProvider.GetOrderItemRecord(id);
+            return _dataAccessProvider.GetOrderItemRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] OrderItems orderItem)
+        public IActionResult Create([FromBody] OrderItem orderItem)
         {
-            if (ModelState.IsValid)
-            {
-                orderItem.updated_at = DateTime.Now;
-                _dataAccessProvider.AddOrderItemRecord(orderItem);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(orderItem);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] OrderItems orderItem)
+        public IActionResult Edit([FromBody] OrderItem orderItem)
         {
-            if (ModelState.IsValid)
-            {
-                orderItem.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateOrderItemRecord(orderItem);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var orderItem = _dataAccessProvider.GetOrderItemRecord(id);
-            if (orderItem == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                orderItem.updated_at = DateTime.Now;
-                orderItem.is_deleted = true;
-                _dataAccessProvider.UpdateOrderItemRecord(orderItem);
-            }
-            return Ok();
+            return UpdateEntity(orderItem);
         }
 
     }

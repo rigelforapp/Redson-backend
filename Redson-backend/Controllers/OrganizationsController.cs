@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class OrganizationsController : ControllerBase
+    public class OrganizationsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public OrganizationsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Organization";
         }
 
         [HttpGet]
-        public IEnumerable<Organizations> Get()
+        public IEnumerable<Organization> Get()
         {
-            return _dataAccessProvider.GetOrganizationsRecords();
+            return _dataAccessProvider.GetOrganizationRecords();
         }
 
-        [HttpGet("{id}")]
-        public Organizations Details(int id)
+        [HttpGet("{Id}")]
+        public Organization Details(int Id)
         {
-            return _dataAccessProvider.GetOrganizationRecord(id);
+            return _dataAccessProvider.GetOrganizationRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Organizations organization)
+        public IActionResult Create([FromBody] Organization organization)
         {
-            if (ModelState.IsValid)
-            {
-                organization.updated_at = DateTime.Now;
-                _dataAccessProvider.AddOrganizationRecord(organization);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(organization);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Organizations organization)
+        public IActionResult Edit([FromBody] Organization organization)
         {
-            if (ModelState.IsValid)
-            {
-                organization.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateOrganizationRecord(organization);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var organization = _dataAccessProvider.GetOrganizationRecord(id);
-            if (organization == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                organization.updated_at = DateTime.Now;
-                organization.is_deleted = true;
-                _dataAccessProvider.UpdateOrganizationRecord(organization);
-            }
-            return Ok();
+            return UpdateEntity(organization);
         }
 
     }

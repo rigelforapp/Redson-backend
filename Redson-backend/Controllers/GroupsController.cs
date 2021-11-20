@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class GroupsController : ControllerBase
+    public class GroupsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public GroupsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Group";
         }
 
         [HttpGet]
-        public IEnumerable<Groups> Get()
+        public IEnumerable<Group> Get()
         {
-            return _dataAccessProvider.GetGroupsRecords();
+            return _dataAccessProvider.GetGroupRecords();
         }
 
-        [HttpGet("{id}")]
-        public Groups Details(int id)
+        [HttpGet("{Id}")]
+        public Group Details(int Id)
         {
-            return _dataAccessProvider.GetGroupRecord(id);
+            return _dataAccessProvider.GetGroupRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Groups group)
+        public IActionResult Create([FromBody] Group group)
         {
-            if (ModelState.IsValid)
-            {
-                group.updated_at = DateTime.Now;
-                _dataAccessProvider.AddGroupRecord(group);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(group);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Groups group)
+        public IActionResult Edit([FromBody] Group group)
         {
-            if (ModelState.IsValid)
-            {
-                group.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateGroupRecord(group);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var group = _dataAccessProvider.GetGroupRecord(id);
-            if (group == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                group.updated_at = DateTime.Now;
-                group.is_deleted = true;
-                _dataAccessProvider.UpdateGroupRecord(group);
-            }
-            return Ok();
+            return UpdateEntity(group);
         }
 
     }

@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class LocationsController : ControllerBase
+    public class LocationsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public LocationsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Location";
         }
 
         [HttpGet]
-        public IEnumerable<Locations> Get()
+        public IEnumerable<Location> Get()
         {
-            return _dataAccessProvider.GetLocationsRecords();
+            return _dataAccessProvider.GetLocationRecords();
         }
 
-        [HttpGet("{id}")]
-        public Locations Details(int id)
+        [HttpGet("{Id}")]
+        public Location Details(int Id)
         {
-            return _dataAccessProvider.GetLocationRecord(id);
+            return _dataAccessProvider.GetLocationRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Locations location)
+        public IActionResult Create([FromBody] Location location)
         {
-            if (ModelState.IsValid)
-            {
-                location.updated_at = DateTime.Now;
-                _dataAccessProvider.AddLocationRecord(location);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(location);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Locations location)
+        public IActionResult Edit([FromBody] Location location)
         {
-            if (ModelState.IsValid)
-            {
-                location.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateLocationRecord(location);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var location = _dataAccessProvider.GetLocationRecord(id);
-            if (location == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                location.updated_at = DateTime.Now;
-                location.is_deleted = true;
-                _dataAccessProvider.UpdateLocationRecord(location);
-            }
-            return Ok();
+            return UpdateEntity(location);
         }
 
     }

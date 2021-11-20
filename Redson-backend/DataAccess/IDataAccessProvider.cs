@@ -8,58 +8,58 @@ namespace Redson_backend.DataAccess
 {
     public interface IDataAccessProvider
     {
-        List<Accounts> GetAccountsRecords();
-        Accounts GetAccountRecord(int id);
-        void AddAccountRecord(Accounts accounts);
-        void UpdateAccountRecord(Accounts accounts);
+        List<Account> GetAccountRecords();
+        Account GetAccountRecord(int id);
+        void AddAccountRecord(Account accounts);
+        void UpdateAccountRecord(Account accounts);
         void DeleteAccountRecord(int id);
 
-        List<Countries> GetCountriesRecords();
-        Countries GetCountryRecord(int id);
-        void AddCountryRecord(Countries accounts);
-        void UpdateCountryRecord(Countries accounts);
+        List<Country> GetCountryRecords();
+        Country GetCountryRecord(int id);
+        void AddCountryRecord(Country accounts);
+        void UpdateCountryRecord(Country accounts);
         void DeleteCountryRecord(int id);
 
-        List<Categories> GetCategoriesRecords();
-        Categories GetCategoryRecord(int id);
-        void AddCategoryRecord(Categories accounts);
-        void UpdateCategoryRecord(Categories accounts);
+        List<Category> GetCategoryRecords();
+        Category GetCategoryRecord(int id);
+        void AddCategoryRecord(Category accounts);
+        void UpdateCategoryRecord(Category accounts);
         void DeleteCategoryRecord(int id);
 
-        List<Comments> GetCommentsRecords();
-        Comments GetCommentRecord(int id);
-        void AddCommentRecord(Comments accounts);
-        void UpdateCommentRecord(Comments accounts);
+        List<Comment> GetCommentRecords();
+        Comment GetCommentRecord(int id);
+        void AddCommentRecord(Comment accounts);
+        void UpdateCommentRecord(Comment accounts);
         void DeleteCommentRecord(int id);
 
-        List<Contacts> GetContactsRecords();
-        Contacts GetContactRecord(int id);
-        void AddContactRecord(Contacts accounts);
-        void UpdateContactRecord(Contacts accounts);
+        List<Contact> GetContactRecords();
+        Contact GetContactRecord(int id);
+        void AddContactRecord(Contact accounts);
+        void UpdateContactRecord(Contact accounts);
         void DeleteContactRecord(int id);
 
-        List<Currencies> GetCurrenciesRecords();
-        Currencies GetCurrencyRecord(int id);
-        void AddCurrencyRecord(Currencies accounts);
-        void UpdateCurrencyRecord(Currencies accounts);
+        List<Currency> GetCurrencyRecords();
+        Currency GetCurrencyRecord(int id);
+        void AddCurrencyRecord(Currency accounts);
+        void UpdateCurrencyRecord(Currency accounts);
         void DeleteCurrencyRecord(int id);
 
-        List<Files> GetFilesRecords();
-        Files GetFileRecord(int id);
-        void AddFileRecord(Files accounts);
-        void UpdateFileRecord(Files accounts);
+        List<File> GetFileRecords();
+        File GetFileRecord(int id);
+        void AddFileRecord(File accounts);
+        void UpdateFileRecord(File accounts);
         void DeleteFileRecord(int id);
 
-        List<Groups> GetGroupsRecords();
-        Groups GetGroupRecord(int id);
-        void AddGroupRecord(Groups accounts);
-        void UpdateGroupRecord(Groups accounts);
+        List<Group> GetGroupRecords();
+        Group GetGroupRecord(int id);
+        void AddGroupRecord(Group accounts);
+        void UpdateGroupRecord(Group accounts);
         void DeleteGroupRecord(int id);
 
-        List<Locations> GetLocationsRecords();
-        Locations GetLocationRecord(int id);
-        void AddLocationRecord(Locations accounts);
-        void UpdateLocationRecord(Locations accounts);
+        List<Location> GetLocationRecords();
+        Location GetLocationRecord(int id);
+        void AddLocationRecord(Location accounts);
+        void UpdateLocationRecord(Location accounts);
         void DeleteLocationRecord(int id);
 
         List<OrderHistory> GetOrderHistoryRecords();
@@ -68,82 +68,76 @@ namespace Redson_backend.DataAccess
         void UpdateOrderHistoryRecord(OrderHistory accounts);
         void DeleteOrderHistoryRecord(int id);
 
-        List<OrderItems> GetOrderItemsRecords();
-        OrderItems GetOrderItemRecord(int id);
-        void AddOrderItemRecord(OrderItems accounts);
-        void UpdateOrderItemRecord(OrderItems accounts);
+        List<OrderItem> GetOrderItemRecords();
+        OrderItem GetOrderItemRecord(int id);
+        void AddOrderItemRecord(OrderItem accounts);
+        void UpdateOrderItemRecord(OrderItem accounts);
         void DeleteOrderItemRecord(int id);
 
-        List<Orders> GetOrdersRecords();
-        Orders GetOrderRecord(int id);
-        void AddOrderRecord(Orders accounts);
-        void UpdateOrderRecord(Orders accounts);
+        List<Order> GetOrderRecords();
+        Order GetOrderRecord(int id);
+        void AddOrderRecord(Order accounts);
+        void UpdateOrderRecord(Order accounts);
         void DeleteOrderRecord(int id);
 
-        List<Organizations> GetOrganizationsRecords();
-        Organizations GetOrganizationRecord(int id);
-        void AddOrganizationRecord(Organizations accounts);
-        void UpdateOrganizationRecord(Organizations accounts);
+        List<Organization> GetOrganizationRecords();
+        Organization GetOrganizationRecord(int id);
+        void AddOrganizationRecord(Organization accounts);
+        void UpdateOrganizationRecord(Organization accounts);
         void DeleteOrganizationRecord(int id);
 
-        List<PackageItems> GetPackageItemsRecords();
-        PackageItems GetPackageItemRecord(int id);
-        void AddPackageItemRecord(PackageItems accounts);
-        void UpdatePackageItemRecord(PackageItems accounts);
+        List<PackageItem> GetPackageItemRecords();
+        PackageItem GetPackageItemRecord(int id);
+        void AddPackageItemRecord(PackageItem accounts);
+        void UpdatePackageItemRecord(PackageItem accounts);
         void DeletePackageItemRecord(int id);
 
-        List<Packages> GetPackagesRecords();
-        Packages GetPackageRecord(int id);
-        void AddPackageRecord(Packages accounts);
-        void UpdatePackageRecord(Packages accounts);
+        List<Package> GetPackageRecords();
+        Package GetPackageRecord(int id);
+        void AddPackageRecord(Package accounts);
+        void UpdatePackageRecord(Package accounts);
         void DeletePackageRecord(int id);
 
-        List<Products> GetProductsRecords();
-        Products GetProductRecord(int id);
-        void AddProductRecord(Products accounts);
-        void UpdateProductRecord(Products accounts);
+        List<Product> GetProductRecords();
+        Product GetProductRecord(int id);
+        void AddProductRecord(Product accounts);
+        void UpdateProductRecord(Product accounts);
         void DeleteProductRecord(int id);
 
-        List<Roles> GetRolesRecords();
-        Roles GetRoleRecord(int id);
-        void AddRoleRecord(Roles accounts);
-        void UpdateRoleRecord(Roles accounts);
+        List<Role> GetRoleRecords();
+        Role GetRoleRecord(int id);
+        void AddRoleRecord(Role accounts);
+        void UpdateRoleRecord(Role accounts);
         void DeleteRoleRecord(int id);
 
-        List<Tasks> GetTasksRecords();
-        Tasks GetTaskRecord(int id);
-        void AddTaskRecord(Tasks accounts);
-        void UpdateTaskRecord(Tasks accounts);
+        List<Redson_backend.Models.Task> GetTaskRecords();
+        Redson_backend.Models.Task GetTaskRecord(int id);
+        void AddTaskRecord(Redson_backend.Models.Task accounts);
+        void UpdateTaskRecord(Redson_backend.Models.Task accounts);
         void DeleteTaskRecord(int id);
 
-        List<Types> GetTypesRecords();
-        Types GetTypeRecord(int id);
-        void AddTypeRecord(Types accounts);
-        void UpdateTypeRecord(Types accounts);
+        List<Redson_backend.Models.Type> GetTypeRecords();
+        Redson_backend.Models.Type GetTypeRecord(int id);
+        void AddTypeRecord(Redson_backend.Models.Type accounts);
+        void UpdateTypeRecord(Redson_backend.Models.Type accounts);
         void DeleteTypeRecord(int id);
 
-        List<Users> GetUsersRecords();
-        Users GetUserRecord(int id);
-        void AddUserRecord(Users accounts);
-        void UpdateUserRecord(Users accounts);
+        List<User> GetUserRecords();
+        User GetUserRecord(int id);
+        void AddUserRecord(User accounts);
+        void UpdateUserRecord(User accounts);
         void DeleteUserRecord(int id);
 
-        List<Vehicles> GetVehiclesRecords();
-        Vehicles GetVehicleRecord(int id);
-        void AddVehicleRecord(Vehicles accounts);
-        void UpdateVehicleRecord(Vehicles accounts);
+        List<Vehicle> GetVehicleRecords();
+        Vehicle GetVehicleRecord(int id);
+        void AddVehicleRecord(Vehicle accounts);
+        void UpdateVehicleRecord(Vehicle accounts);
         void DeleteVehicleRecord(int id);
 
-        List<VehicleModels> GetVehicleModelsRecords();
-        VehicleModels GetVehicleModelRecord(int id);
-        void AddVehicleModelRecord(VehicleModels accounts);
-        void UpdateVehicleModelRecord(VehicleModels accounts);
+        List<VehicleModel> GetVehicleModelRecords();
+        VehicleModel GetVehicleModelRecord(int id);
+        void AddVehicleModelRecord(VehicleModel accounts);
+        void UpdateVehicleModelRecord(VehicleModel accounts);
         void DeleteVehicleModelRecord(int id);
-
-        List<VehiclesEquipments> GetVehiclesEquipmentsRecords();
-        VehiclesEquipments GetVehicleEquipmentRecord(int id);
-        void AddVehicleEquipmentRecord(VehiclesEquipments accounts);
-        void UpdateVehicleEquipmentRecord(VehiclesEquipments accounts);
-        void DeleteVehicleEquipmentRecord(int id);
     }
 }

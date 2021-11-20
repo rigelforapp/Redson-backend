@@ -23,25 +23,26 @@ namespace Redson_backend.Controllers
         }
 
         [HttpGet]
-        public IEnumerable<Accounts> Get()
+        public IEnumerable<Account> Get()
         {
-            return _dataAccessProvider.GetAccountsRecords();
+            var data = _dataAccessProvider.GetAccountRecords();
+            return _dataAccessProvider.GetAccountRecords();
         }
 
-        [HttpGet("{id}")]
-        public Accounts Details(int id)
+        [HttpGet("{Id}")]
+        public Account Details(int Id)
         {
-            return _dataAccessProvider.GetAccountRecord(id);
+            return _dataAccessProvider.GetAccountRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Accounts account)
+        public IActionResult Create([FromBody] Account account)
         {
             return CreateEntity(account);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Accounts account)
+        public IActionResult Edit([FromBody] Account account)
         {
             return UpdateEntity(account);
         }

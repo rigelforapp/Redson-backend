@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CommentsController : ControllerBase
+    public class CommentsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public CommentsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Comment";
         }
 
         [HttpGet]
-        public IEnumerable<Comments> Get()
+        public IEnumerable<Comment> Get()
         {
-            return _dataAccessProvider.GetCommentsRecords();
+            return _dataAccessProvider.GetCommentRecords();
         }
 
-        [HttpGet("{id}")]
-        public Comments Details(int id)
+        [HttpGet("{Id}")]
+        public Comment Details(int Id)
         {
-            return _dataAccessProvider.GetCommentRecord(id);
+            return _dataAccessProvider.GetCommentRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Comments comment)
+        public IActionResult Create([FromBody] Comment comment)
         {
-            if (ModelState.IsValid)
-            {
-                comment.updated_at = DateTime.Now;
-                _dataAccessProvider.AddCommentRecord(comment);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(comment);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Comments comment)
+        public IActionResult Edit([FromBody] Comment comment)
         {
-            if (ModelState.IsValid)
-            {
-                comment.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateCommentRecord(comment);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var comment = _dataAccessProvider.GetCommentRecord(id);
-            if (comment == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                comment.updated_at = DateTime.Now;
-                comment.is_deleted = true;
-                _dataAccessProvider.UpdateCommentRecord(comment);
-            }
-            return Ok();
+            return UpdateEntity(comment);
         }
 
     }

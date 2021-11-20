@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CategoriesController : ControllerBase
+    public class CategoriesController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public CategoriesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Category";
         }
 
         [HttpGet]
-        public IEnumerable<Categories> Get()
+        public IEnumerable<Category> Get()
         {
-            return _dataAccessProvider.GetCategoriesRecords();
+            return _dataAccessProvider.GetCategoryRecords();
         }
 
-        [HttpGet("{id}")]
-        public Categories Details(int id)
+        [HttpGet("{Id}")]
+        public Category Details(int Id)
         {
-            return _dataAccessProvider.GetCategoryRecord(id);
+            return _dataAccessProvider.GetCategoryRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Categories category)
+        public IActionResult Create([FromBody] Category category)
         {
-            if (ModelState.IsValid)
-            {
-                category.updated_at = DateTime.Now;
-                _dataAccessProvider.AddCategoryRecord(category);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(category);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Categories category)
+        public IActionResult Edit([FromBody] Category category)
         {
-            if (ModelState.IsValid)
-            {
-                category.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateCategoryRecord(category);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var category = _dataAccessProvider.GetCategoryRecord(id);
-            if (category == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                category.updated_at = DateTime.Now;
-                category.is_deleted = true;
-                _dataAccessProvider.UpdateCategoryRecord(category);
-            }
-            return Ok();
+            return UpdateEntity(category);
         }
 
     }

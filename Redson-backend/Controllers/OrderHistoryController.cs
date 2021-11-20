@@ -5,20 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class OrderHistoryController : ControllerBase
+    public class OrderHistoryController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public OrderHistoryController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "OrderHistory";
         }
 
         [HttpGet]
@@ -36,42 +37,13 @@ namespace Redson_backend.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] OrderHistory orderHistory)
         {
-            if (ModelState.IsValid)
-            {
-                orderHistory.updated_at = DateTime.Now;
-                _dataAccessProvider.AddOrderHistoryRecord(orderHistory);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(orderHistory);
         }
 
         [HttpPut]
         public IActionResult Edit([FromBody] OrderHistory orderHistory)
         {
-            if (ModelState.IsValid)
-            {
-                orderHistory.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateOrderHistoryRecord(orderHistory);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var orderHistory = _dataAccessProvider.GetOrderHistoryRecord(id);
-            if (orderHistory == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                orderHistory.updated_at = DateTime.Now;
-                orderHistory.is_deleted = true;
-                _dataAccessProvider.UpdateOrderHistoryRecord(orderHistory);
-            }
-            return Ok();
+            return UpdateEntity(orderHistory);
         }
 
     }

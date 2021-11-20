@@ -16,23 +16,6 @@ namespace Redson_backend.Controllers
 
         public IDataAccessProvider _dataAccessProvider;
 
-        /*[HttpGet]
-        public IEnumerable<Accounts> Get()
-        {
-            return _dataAccessProvider.GetAccountsRecords();
-        }
-
-        [HttpGet("{id}")]
-        public Base Details(int id)
-        {
-            Type dataAccessProviderType = _dataAccessProvider.GetType();
-            MethodInfo GetRecordMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Record");
-
-            var obj = GetRecordMethod.Invoke(_dataAccessProvider, new object[] { id });
-
-            return CastType(obj);
-        }*/
-
         protected IActionResult CreateEntity(Base baseObj)
         {
             if (
@@ -40,10 +23,10 @@ namespace Redson_backend.Controllers
                 ValidateBaseParameters(baseObj)
             )
             {
-                baseObj.created_at = DateTime.Now;
-                baseObj.updated_at = DateTime.Now;
+                baseObj.CreatedAt = DateTime.Now;
+                baseObj.UpdatedAt = DateTime.Now;
 
-                Type dataAccessProviderType = _dataAccessProvider.GetType();
+                System.Type dataAccessProviderType = _dataAccessProvider.GetType();
                 MethodInfo AddRecordMethod = dataAccessProviderType.GetMethod("Update" + this.entityType + "Record");
 
                 AddRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj });
@@ -57,16 +40,16 @@ namespace Redson_backend.Controllers
             if (
                 ModelState.IsValid &&
                 ValidateBaseParameters(baseObj) &&
-                baseObj.id != null
+                baseObj.Id != null
             )
             {
-                baseObj.updated_at = DateTime.Now;
+                baseObj.UpdatedAt = DateTime.Now;
 
-                Type dataAccessProviderType = _dataAccessProvider.GetType();
+                System.Type dataAccessProviderType = _dataAccessProvider.GetType();
                 MethodInfo updateRecordMethod = dataAccessProviderType.GetMethod("Update" + this.entityType + "Record");
                 MethodInfo getRecordMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Record");
 
-                object lastBaseObj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj.id });
+                object lastBaseObj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj.Id });
                 var lastBaseObjCasted = CastType(lastBaseObj);
 
                 lastBaseObjCasted = CopyValues(lastBaseObjCasted, baseObj);
@@ -85,7 +68,7 @@ namespace Redson_backend.Controllers
         {
             var headers = Request.Headers;
             Console.WriteLine(auth);
-            Type dataAccessProviderType = _dataAccessProvider.GetType();
+            System.Type dataAccessProviderType = _dataAccessProvider.GetType();
             MethodInfo getRecordMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Record");
             object obj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { id });
 
@@ -98,8 +81,8 @@ namespace Redson_backend.Controllers
             }
             else
             {
-                objCasted.updated_at = DateTime.Now;
-                objCasted.is_deleted = true;
+                objCasted.UpdatedAt = DateTime.Now;
+                objCasted.IsDeleted = true;
 
                 MethodInfo updateRecordMethod = dataAccessProviderType.GetMethod("Update" + this.entityType + "Record");
                 updateRecordMethod.Invoke(_dataAccessProvider, new object[] { objCasted });
@@ -112,7 +95,7 @@ namespace Redson_backend.Controllers
             switch (this.entityType)
             {
                 case "Account":
-                    return (Accounts)obj;
+                    return (Account)obj;
             }
 
             return null;
@@ -121,12 +104,12 @@ namespace Redson_backend.Controllers
         protected bool ValidateBaseParameters(Base entity)
         {
             if (
-                entity.created_at != null ||
-                entity.updated_at != null ||
-                entity.created_by_id != null ||
-                entity.updated_by_id != null ||
-                entity.is_active != null ||
-                entity.is_deleted != null)
+                entity.CreatedAt != null ||
+                entity.UpdatedAt != null ||
+                entity.CreatedById != null ||
+                entity.UpdatedById != null ||
+                entity.IsActive != null ||
+                entity.IsDeleted != null)
             {
                 return false;
             }
@@ -135,11 +118,11 @@ namespace Redson_backend.Controllers
 
         protected T CopyValues<T>(T target, T source)
         {
-            Type t = typeof(Base);
+            System.Type t = typeof(Base);
             switch (entityType)
             {
                 case "Account":
-                    t = typeof(Accounts);
+                    t = typeof(Account);
                     break;
             }
 

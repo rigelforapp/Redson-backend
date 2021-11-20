@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class OrdersController : ControllerBase
+    public class OrdersController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public OrdersController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Order";
         }
 
         [HttpGet]
-        public IEnumerable<Orders> Get()
+        public IEnumerable<Order> Get()
         {
-            return _dataAccessProvider.GetOrdersRecords();
+            return _dataAccessProvider.GetOrderRecords();
         }
 
-        [HttpGet("{id}")]
-        public Orders Details(int id)
+        [HttpGet("{Id}")]
+        public Order Details(int Id)
         {
-            return _dataAccessProvider.GetOrderRecord(id);
+            return _dataAccessProvider.GetOrderRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Orders order)
+        public IActionResult Create([FromBody] Order order)
         {
-            if (ModelState.IsValid)
-            {
-                order.updated_at = DateTime.Now;
-                _dataAccessProvider.AddOrderRecord(order);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(order);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Orders order)
+        public IActionResult Edit([FromBody] Order order)
         {
-            if (ModelState.IsValid)
-            {
-                order.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateOrderRecord(order);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var order = _dataAccessProvider.GetOrderRecord(id);
-            if (order == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                order.updated_at = DateTime.Now;
-                order.is_deleted = true;
-                _dataAccessProvider.UpdateOrderRecord(order);
-            }
-            return Ok();
+            return UpdateEntity(order);
         }
 
     }

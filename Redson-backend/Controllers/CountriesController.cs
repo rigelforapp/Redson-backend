@@ -5,72 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class CountriesController : ControllerBase
+    public class CountriesController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public CountriesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Country";
         }
 
         [HttpGet]
-        public IEnumerable<Countries> Get()
+        public IEnumerable<Country> Get()
         {
-            return _dataAccessProvider.GetCountriesRecords();
+            return _dataAccessProvider.GetCountryRecords();
         }
 
-        [HttpGet("{id}")]
-        public Countries Details(int id)
+        [HttpGet("{Id}")]
+        public Country Details(int Id)
         {
-            return _dataAccessProvider.GetCountryRecord(id);
+            return _dataAccessProvider.GetCountryRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Countries country)
+        public IActionResult Create([FromBody] Country countries)
         {
-            if (ModelState.IsValid)
-            {
-                country.updated_at = DateTime.Now;
-                _dataAccessProvider.AddCountryRecord(country);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(countries);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Countries country)
+        public IActionResult Edit([FromBody] Country countries)
         {
-            if (ModelState.IsValid)
-            {
-                country.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateCountryRecord(country);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var country = _dataAccessProvider.GetCountryRecord(id);
-            if (country == null)
-            {
-                return NotFound();
-            }
-            else {
-                country.updated_at = DateTime.Now;
-                country.is_deleted = true;
-                _dataAccessProvider.UpdateCountryRecord( country );
-            }
-            return Ok();
+            return UpdateEntity(countries);
         }
 
     }

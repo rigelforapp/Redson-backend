@@ -1,12 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 using Redson_backend.Models;
 
 namespace Redson_backend.DataAccess
 {
-    public class DataAccessProvider: IDataAccessProvider
+    public class DataAccessProvider : IDataAccessProvider
     {
         private readonly PostgreSqlContext _context;
         static PostgreSqlContext _scontext;
@@ -17,293 +16,293 @@ namespace Redson_backend.DataAccess
             _scontext = context;
         }
 
-        #region Accounts
+        #region Account
 
-        public List<Accounts> GetAccountsRecords()
+        public List<Account> GetAccountRecords()
         {
-            return _context.accounts.ToList();
+            return _context.account.ToList();
         }
 
-        public Accounts GetAccountRecord(int id)
+        public Account GetAccountRecord(int Id)
         {
-            return _context.accounts.FirstOrDefault(t => t.id== id);
+            return _context.account.FirstOrDefault(t => t.Id == Id);
         }
 
-        public void AddAccountRecord(Accounts accounts)
+        public void AddAccountRecord(Account account)
         {
-            _context.accounts.Add(accounts);
+            _context.account.Add(account);
             _context.SaveChanges();
         }
 
-        public void UpdateAccountRecord(Accounts accounts)
+        public void UpdateAccountRecord(Account account)
         {
-            _context.accounts.Update(accounts);
+            _context.account.Update(account);
             _context.SaveChanges();
         }
-        public void DeleteAccountRecord(int id)
+        public void DeleteAccountRecord(int Id)
         {
-            var entity = _context.accounts.FirstOrDefault(t => t.id == id);
-            _context.accounts.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Accounts
-
-        #region Countries
-
-        public List<Countries> GetCountriesRecords()
-        {
-            return _context.countries.ToList();
-        }
-
-        public Countries GetCountryRecord(int id)
-        {
-            return _context.countries.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddCountryRecord(Countries countries)
-        {
-            _context.countries.Add(countries);
+            var entity = _context.account.FirstOrDefault(t => t.Id == Id);
+            _context.account.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateCountryRecord(Countries countries)
+        #endregion Account
+
+        #region Country
+
+        public List<Country> GetCountryRecords()
         {
-            _context.countries.Update(countries);
-            _context.SaveChanges();
-        }
-        public void DeleteCountryRecord(int id)
-        {
-            var entity = _context.countries.FirstOrDefault(t => t.id == id);
-            _context.countries.Remove(entity);
-            _context.SaveChanges();
+            return _context.country.ToList();
         }
 
-        #endregion Countries
-
-        #region Categories
-
-        public List<Categories> GetCategoriesRecords()
+        public Country GetCountryRecord(int Id)
         {
-            return _context.categories.ToList();
+            return _context.country.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Categories GetCategoryRecord(int id)
+        public void AddCountryRecord(Country country)
         {
-            return _context.categories.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddCategoryRecord(Categories categories)
-        {
-            _context.categories.Add(categories);
+            _context.country.Add(country);
             _context.SaveChanges();
         }
 
-        public void UpdateCategoryRecord(Categories categories)
+        public void UpdateCountryRecord(Country country)
         {
-            _context.categories.Update(categories);
+            _context.country.Update(country);
             _context.SaveChanges();
         }
-        public void DeleteCategoryRecord(int id)
+        public void DeleteCountryRecord(int Id)
         {
-            var entity = _context.categories.FirstOrDefault(t => t.id == id);
-            _context.categories.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Categories
-
-        #region Comments
-
-        public List<Comments> GetCommentsRecords()
-        {
-            return _context.comments.ToList();
-        }
-
-        public Comments GetCommentRecord(int id)
-        {
-            return _context.comments.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddCommentRecord(Comments comments)
-        {
-            _context.comments.Add(comments);
+            var entity = _context.country.FirstOrDefault(t => t.Id == Id);
+            _context.country.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateCommentRecord(Comments comments)
+        #endregion Country
+
+        #region Category
+
+        public List<Category> GetCategoryRecords()
         {
-            _context.comments.Update(comments);
-            _context.SaveChanges();
-        }
-        public void DeleteCommentRecord(int id)
-        {
-            var entity = _context.comments.FirstOrDefault(t => t.id == id);
-            _context.comments.Remove(entity);
-            _context.SaveChanges();
+            return _context.category.ToList();
         }
 
-        #endregion Comments
-
-        #region Contacts
-
-        public List<Contacts> GetContactsRecords()
+        public Category GetCategoryRecord(int Id)
         {
-            return _context.contacts.ToList();
+            return _context.category.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Contacts GetContactRecord(int id)
+        public void AddCategoryRecord(Category category)
         {
-            return _context.contacts.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddContactRecord(Contacts contacts)
-        {
-            _context.contacts.Add(contacts);
+            _context.category.Add(category);
             _context.SaveChanges();
         }
 
-        public void UpdateContactRecord(Contacts contacts)
+        public void UpdateCategoryRecord(Category category)
         {
-            _context.contacts.Update(contacts);
+            _context.category.Update(category);
             _context.SaveChanges();
         }
-        public void DeleteContactRecord(int id)
+        public void DeleteCategoryRecord(int Id)
         {
-            var entity = _context.contacts.FirstOrDefault(t => t.id == id);
-            _context.contacts.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Contacts
-
-        #region Currencies
-
-        public List<Currencies> GetCurrenciesRecords()
-        {
-            return _context.currencies.ToList();
-        }
-
-        public Currencies GetCurrencyRecord(int id)
-        {
-            return _context.currencies.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddCurrencyRecord(Currencies currencies)
-        {
-            _context.currencies.Add(currencies);
+            var entity = _context.category.FirstOrDefault(t => t.Id == Id);
+            _context.category.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateCurrencyRecord(Currencies currencies)
+        #endregion Category
+
+        #region Comment
+
+        public List<Comment> GetCommentRecords()
         {
-            _context.currencies.Update(currencies);
-            _context.SaveChanges();
-        }
-        public void DeleteCurrencyRecord(int id)
-        {
-            var entity = _context.currencies.FirstOrDefault(t => t.id == id);
-            _context.currencies.Remove(entity);
-            _context.SaveChanges();
+            return _context.comment.ToList();
         }
 
-        #endregion Currencies
-
-        #region Files
-
-        public List<Files> GetFilesRecords()
+        public Comment GetCommentRecord(int Id)
         {
-            return _context.files.ToList();
+            return _context.comment.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Files GetFileRecord(int id)
+        public void AddCommentRecord(Comment comment)
         {
-            return _context.files.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddFileRecord(Files files)
-        {
-            _context.files.Add(files);
+            _context.comment.Add(comment);
             _context.SaveChanges();
         }
 
-        public void UpdateFileRecord(Files files)
+        public void UpdateCommentRecord(Comment comment)
         {
-            _context.files.Update(files);
+            _context.comment.Update(comment);
             _context.SaveChanges();
         }
-        public void DeleteFileRecord(int id)
+        public void DeleteCommentRecord(int Id)
         {
-            var entity = _context.files.FirstOrDefault(t => t.id == id);
-            _context.files.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Files
-
-        #region Groups
-
-        public List<Groups> GetGroupsRecords()
-        {
-            return _context.groups.ToList();
-        }
-
-        public Groups GetGroupRecord(int id)
-        {
-            return _context.groups.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddGroupRecord(Groups groups)
-        {
-            _context.groups.Add(groups);
+            var entity = _context.comment.FirstOrDefault(t => t.Id == Id);
+            _context.comment.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateGroupRecord(Groups groups)
+        #endregion Comment
+
+        #region Contact
+
+        public List<Contact> GetContactRecords()
         {
-            _context.groups.Update(groups);
-            _context.SaveChanges();
-        }
-        public void DeleteGroupRecord(int id)
-        {
-            var entity = _context.groups.FirstOrDefault(t => t.id == id);
-            _context.groups.Remove(entity);
-            _context.SaveChanges();
+            return _context.contact.ToList();
         }
 
-        #endregion Groups
-
-        #region Locations
-
-        public List<Locations> GetLocationsRecords()
+        public Contact GetContactRecord(int Id)
         {
-            return _context.locations.ToList();
+            return _context.contact.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Locations GetLocationRecord(int id)
+        public void AddContactRecord(Contact contact)
         {
-            return _context.locations.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddLocationRecord(Locations locations)
-        {
-            _context.locations.Add(locations);
+            _context.contact.Add(contact);
             _context.SaveChanges();
         }
 
-        public void UpdateLocationRecord(Locations locations)
+        public void UpdateContactRecord(Contact contact)
         {
-            _context.locations.Update(locations);
+            _context.contact.Update(contact);
             _context.SaveChanges();
         }
-        public void DeleteLocationRecord(int id)
+        public void DeleteContactRecord(int Id)
         {
-            var entity = _context.locations.FirstOrDefault(t => t.id == id);
-            _context.locations.Remove(entity);
+            var entity = _context.contact.FirstOrDefault(t => t.Id == Id);
+            _context.contact.Remove(entity);
             _context.SaveChanges();
         }
 
-        #endregion Locations
+        #endregion Contact
+
+        #region Currency
+
+        public List<Currency> GetCurrencyRecords()
+        {
+            return _context.currency.ToList();
+        }
+
+        public Currency GetCurrencyRecord(int Id)
+        {
+            return _context.currency.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddCurrencyRecord(Currency currency)
+        {
+            _context.currency.Add(currency);
+            _context.SaveChanges();
+        }
+
+        public void UpdateCurrencyRecord(Currency currency)
+        {
+            _context.currency.Update(currency);
+            _context.SaveChanges();
+        }
+        public void DeleteCurrencyRecord(int Id)
+        {
+            var entity = _context.currency.FirstOrDefault(t => t.Id == Id);
+            _context.currency.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Currency
+
+        #region File
+
+        public List<File> GetFileRecords()
+        {
+            return _context.file.ToList();
+        }
+
+        public File GetFileRecord(int Id)
+        {
+            return _context.file.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddFileRecord(File file)
+        {
+            _context.file.Add(file);
+            _context.SaveChanges();
+        }
+
+        public void UpdateFileRecord(File file)
+        {
+            _context.file.Update(file);
+            _context.SaveChanges();
+        }
+        public void DeleteFileRecord(int Id)
+        {
+            var entity = _context.file.FirstOrDefault(t => t.Id == Id);
+            _context.file.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion File
+
+        #region Group
+
+        public List<Group> GetGroupRecords()
+        {
+            return _context.group.ToList();
+        }
+
+        public Group GetGroupRecord(int Id)
+        {
+            return _context.group.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddGroupRecord(Group group)
+        {
+            _context.group.Add(group);
+            _context.SaveChanges();
+        }
+
+        public void UpdateGroupRecord(Group group)
+        {
+            _context.group.Update(group);
+            _context.SaveChanges();
+        }
+        public void DeleteGroupRecord(int Id)
+        {
+            var entity = _context.group.FirstOrDefault(t => t.Id == Id);
+            _context.group.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Group
+
+        #region Location
+
+        public List<Location> GetLocationRecords()
+        {
+            return _context.location.ToList();
+        }
+
+        public Location GetLocationRecord(int Id)
+        {
+            return _context.location.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddLocationRecord(Location location)
+        {
+            _context.location.Add(location);
+            _context.SaveChanges();
+        }
+
+        public void UpdateLocationRecord(Location location)
+        {
+            _context.location.Update(location);
+            _context.SaveChanges();
+        }
+        public void DeleteLocationRecord(int Id)
+        {
+            var entity = _context.location.FirstOrDefault(t => t.Id == Id);
+            _context.location.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Location
 
         #region OrderHistory
 
@@ -312,9 +311,9 @@ namespace Redson_backend.DataAccess
             return _context.orderHistory.ToList();
         }
 
-        public OrderHistory GetOrderHistoryRecord(int id)
+        public OrderHistory GetOrderHistoryRecord(int Id)
         {
-            return _context.orderHistory.FirstOrDefault(t => t.id == id);
+            return _context.orderHistory.FirstOrDefault(t => t.Id == Id);
         }
 
         public void AddOrderHistoryRecord(OrderHistory orderHistory)
@@ -328,435 +327,403 @@ namespace Redson_backend.DataAccess
             _context.orderHistory.Update(orderHistory);
             _context.SaveChanges();
         }
-        public void DeleteOrderHistoryRecord(int id)
+        public void DeleteOrderHistoryRecord(int Id)
         {
-            var entity = _context.orderHistory.FirstOrDefault(t => t.id == id);
+            var entity = _context.orderHistory.FirstOrDefault(t => t.Id == Id);
             _context.orderHistory.Remove(entity);
             _context.SaveChanges();
         }
 
         #endregion OrderHistory
 
-        #region OrderItems
+        #region OrderItem
 
-        public List<OrderItems> GetOrderItemsRecords()
+        public List<OrderItem> GetOrderItemRecords()
         {
-            return _context.orderItems.ToList();
+            return _context.orderItem.ToList();
         }
 
-        public OrderItems GetOrderItemRecord(int id)
+        public OrderItem GetOrderItemRecord(int Id)
         {
-            return _context.orderItems.FirstOrDefault(t => t.id == id);
+            return _context.orderItem.FirstOrDefault(t => t.Id == Id);
         }
 
-        public void AddOrderItemRecord(OrderItems orderItems)
+        public void AddOrderItemRecord(OrderItem orderItem)
         {
-            _context.orderItems.Add(orderItems);
+            _context.orderItem.Add(orderItem);
             _context.SaveChanges();
         }
 
-        public void UpdateOrderItemRecord(OrderItems orderItems)
+        public void UpdateOrderItemRecord(OrderItem orderItem)
         {
-            _context.orderItems.Update(orderItems);
+            _context.orderItem.Update(orderItem);
             _context.SaveChanges();
         }
-        public void DeleteOrderItemRecord(int id)
+        public void DeleteOrderItemRecord(int Id)
         {
-            var entity = _context.orderItems.FirstOrDefault(t => t.id == id);
-            _context.orderItems.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion OrderItems
-
-        #region Orders
-
-        public List<Orders> GetOrdersRecords()
-        {
-            return _context.orders.ToList();
-        }
-
-        public Orders GetOrderRecord(int id)
-        {
-            return _context.orders.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddOrderRecord(Orders orders)
-        {
-            _context.orders.Add(orders);
+            var entity = _context.orderItem.FirstOrDefault(t => t.Id == Id);
+            _context.orderItem.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateOrderRecord(Orders orders)
+        #endregion OrderItem
+
+        #region Order
+
+        public List<Order> GetOrderRecords()
         {
-            _context.orders.Update(orders);
-            _context.SaveChanges();
-        }
-        public void DeleteOrderRecord(int id)
-        {
-            var entity = _context.orders.FirstOrDefault(t => t.id == id);
-            _context.orders.Remove(entity);
-            _context.SaveChanges();
+            return _context.order.ToList();
         }
 
-        #endregion Orders
-
-        #region Organizations
-
-        public List<Organizations> GetOrganizationsRecords()
+        public Order GetOrderRecord(int Id)
         {
-            return _context.organizations.ToList();
+            return _context.order.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Organizations GetOrganizationRecord(int id)
+        public void AddOrderRecord(Order order)
         {
-            return _context.organizations.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddOrganizationRecord(Organizations organizations)
-        {
-            _context.organizations.Add(organizations);
+            _context.order.Add(order);
             _context.SaveChanges();
         }
 
-        public void UpdateOrganizationRecord(Organizations organizations)
+        public void UpdateOrderRecord(Order order)
         {
-            _context.organizations.Update(organizations);
+            _context.order.Update(order);
             _context.SaveChanges();
         }
-        public void DeleteOrganizationRecord(int id)
+        public void DeleteOrderRecord(int Id)
         {
-            var entity = _context.organizations.FirstOrDefault(t => t.id == id);
-            _context.organizations.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Organizations
-
-        #region PackageItems
-
-        public List<PackageItems> GetPackageItemsRecords()
-        {
-            return _context.packageItems.ToList();
-        }
-
-        public PackageItems GetPackageItemRecord(int id)
-        {
-            return _context.packageItems.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddPackageItemRecord(PackageItems packageItems)
-        {
-            _context.packageItems.Add(packageItems);
+            var entity = _context.order.FirstOrDefault(t => t.Id == Id);
+            _context.order.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdatePackageItemRecord(PackageItems packageItems)
+        #endregion Order
+
+        #region Organization
+
+        public List<Organization> GetOrganizationRecords()
         {
-            _context.packageItems.Update(packageItems);
-            _context.SaveChanges();
-        }
-        public void DeletePackageItemRecord(int id)
-        {
-            var entity = _context.packageItems.FirstOrDefault(t => t.id == id);
-            _context.packageItems.Remove(entity);
-            _context.SaveChanges();
+            return _context.organization.ToList();
         }
 
-        #endregion PackageItems
-
-        #region Packages
-
-        public List<Packages> GetPackagesRecords()
+        public Organization GetOrganizationRecord(int Id)
         {
-            return _context.packages.ToList();
+            return _context.organization.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Packages GetPackageRecord(int id)
+        public void AddOrganizationRecord(Organization organization)
         {
-            return _context.packages.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddPackageRecord(Packages packages)
-        {
-            _context.packages.Add(packages);
+            _context.organization.Add(organization);
             _context.SaveChanges();
         }
 
-        public void UpdatePackageRecord(Packages packages)
+        public void UpdateOrganizationRecord(Organization organization)
         {
-            _context.packages.Update(packages);
+            _context.organization.Update(organization);
             _context.SaveChanges();
         }
-        public void DeletePackageRecord(int id)
+        public void DeleteOrganizationRecord(int Id)
         {
-            var entity = _context.packages.FirstOrDefault(t => t.id == id);
-            _context.packages.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Packages
-
-        #region Products
-
-        public List<Products> GetProductsRecords()
-        {
-            return _context.products.ToList();
-        }
-
-        public Products GetProductRecord(int id)
-        {
-            return _context.products.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddProductRecord(Products products)
-        {
-            _context.products.Add(products);
+            var entity = _context.organization.FirstOrDefault(t => t.Id == Id);
+            _context.organization.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateProductRecord(Products products)
+        #endregion Organization
+
+        #region PackageItem
+
+        public List<PackageItem> GetPackageItemRecords()
         {
-            _context.products.Update(products);
-            _context.SaveChanges();
-        }
-        public void DeleteProductRecord(int id)
-        {
-            var entity = _context.products.FirstOrDefault(t => t.id == id);
-            _context.products.Remove(entity);
-            _context.SaveChanges();
+            return _context.packageItem.ToList();
         }
 
-        #endregion Products
-
-        #region Roles
-
-        public List<Roles> GetRolesRecords()
+        public PackageItem GetPackageItemRecord(int Id)
         {
-            return _context.roles.ToList();
+            return _context.packageItem.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Roles GetRoleRecord(int id)
+        public void AddPackageItemRecord(PackageItem packageItem)
         {
-            return _context.roles.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddRoleRecord(Roles roles)
-        {
-            _context.roles.Add(roles);
+            _context.packageItem.Add(packageItem);
             _context.SaveChanges();
         }
 
-        public void UpdateRoleRecord(Roles roles)
+        public void UpdatePackageItemRecord(PackageItem packageItem)
         {
-            _context.roles.Update(roles);
+            _context.packageItem.Update(packageItem);
             _context.SaveChanges();
         }
-        public void DeleteRoleRecord(int id)
+        public void DeletePackageItemRecord(int Id)
         {
-            var entity = _context.roles.FirstOrDefault(t => t.id == id);
-            _context.roles.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Roles
-
-        #region Tasks
-
-        public List<Tasks> GetTasksRecords()
-        {
-            return _context.tasks.ToList();
-        }
-
-        public Tasks GetTaskRecord(int id)
-        {
-            return _context.tasks.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddTaskRecord(Tasks tasks)
-        {
-            _context.tasks.Add(tasks);
+            var entity = _context.packageItem.FirstOrDefault(t => t.Id == Id);
+            _context.packageItem.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateTaskRecord(Tasks tasks)
+        #endregion PackageItem
+
+        #region Package
+
+        public List<Package> GetPackageRecords()
         {
-            _context.tasks.Update(tasks);
-            _context.SaveChanges();
-        }
-        public void DeleteTaskRecord(int id)
-        {
-            var entity = _context.tasks.FirstOrDefault(t => t.id == id);
-            _context.tasks.Remove(entity);
-            _context.SaveChanges();
+            return _context.package.ToList();
         }
 
-        #endregion Tasks
-
-        #region Types
-
-        public List<Types> GetTypesRecords()
+        public Package GetPackageRecord(int Id)
         {
-            return _context.types.ToList();
+            return _context.package.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Types GetTypeRecord(int id)
+        public void AddPackageRecord(Package package)
         {
-            return _context.types.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddTypeRecord(Types types)
-        {
-            _context.types.Add(types);
+            _context.package.Add(package);
             _context.SaveChanges();
         }
 
-        public void UpdateTypeRecord(Types types)
+        public void UpdatePackageRecord(Package package)
         {
-            _context.types.Update(types);
+            _context.package.Update(package);
             _context.SaveChanges();
         }
-        public void DeleteTypeRecord(int id)
+        public void DeletePackageRecord(int Id)
         {
-            var entity = _context.types.FirstOrDefault(t => t.id == id);
-            _context.types.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Types
-
-        #region Users
-
-        public List<Users> GetUsersRecords()
-        {
-            return _context.users.ToList();
-        }
-
-        public Users GetUserRecord(int id)
-        {
-            return _context.users.FirstOrDefault(t => t.id == id);
-        }
-
-        public static Users GetUserByUserAndPassRecord(string username, string password)
-        {
-            return _scontext.users.Where(u => u.username==username && u.password==password).FirstOrDefault();
-        }
-
-        public void AddUserRecord(Users users)
-        {
-            _context.users.Add(users);
+            var entity = _context.package.FirstOrDefault(t => t.Id == Id);
+            _context.package.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateUserRecord(Users users)
+        #endregion Package
+
+        #region Product
+
+        public List<Product> GetProductRecords()
         {
-            _context.users.Update(users);
-            _context.SaveChanges();
-        }
-        public void DeleteUserRecord(int id)
-        {
-            var entity = _context.users.FirstOrDefault(t => t.id == id);
-            _context.users.Remove(entity);
-            _context.SaveChanges();
+            return _context.product.ToList();
         }
 
-        #endregion Users
-
-        #region Vehicles
-
-        public List<Vehicles> GetVehiclesRecords()
+        public Product GetProductRecord(int Id)
         {
-            return _context.vehicles.ToList();
+            return _context.product.FirstOrDefault(t => t.Id == Id);
         }
 
-        public Vehicles GetVehicleRecord(int id)
+        public void AddProductRecord(Product product)
         {
-            return _context.vehicles.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddVehicleRecord(Vehicles vehicles)
-        {
-            _context.vehicles.Add(vehicles);
+            _context.product.Add(product);
             _context.SaveChanges();
         }
 
-        public void UpdateVehicleRecord(Vehicles vehicles)
+        public void UpdateProductRecord(Product product)
         {
-            _context.vehicles.Update(vehicles);
+            _context.product.Update(product);
             _context.SaveChanges();
         }
-        public void DeleteVehicleRecord(int id)
+        public void DeleteProductRecord(int Id)
         {
-            var entity = _context.vehicles.FirstOrDefault(t => t.id == id);
-            _context.vehicles.Remove(entity);
-            _context.SaveChanges();
-        }
-
-        #endregion Vehicles
-
-        #region VehicleModels
-
-        public List<VehicleModels> GetVehicleModelsRecords()
-        {
-            return _context.vehicleModels.ToList();
-        }
-
-        public VehicleModels GetVehicleModelRecord(int id)
-        {
-            return _context.vehicleModels.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddVehicleModelRecord(VehicleModels vehicleModels)
-        {
-            _context.vehicleModels.Add(vehicleModels);
+            var entity = _context.product.FirstOrDefault(t => t.Id == Id);
+            _context.product.Remove(entity);
             _context.SaveChanges();
         }
 
-        public void UpdateVehicleModelRecord(VehicleModels vehicleModels)
+        #endregion Product
+
+        #region Role
+
+        public List<Role> GetRoleRecords()
         {
-            _context.vehicleModels.Update(vehicleModels);
-            _context.SaveChanges();
-        }
-        public void DeleteVehicleModelRecord(int id)
-        {
-            var entity = _context.vehicleModels.FirstOrDefault(t => t.id == id);
-            _context.vehicleModels.Remove(entity);
-            _context.SaveChanges();
+            return _context.role.ToList();
         }
 
-        #endregion VehicleModels
-
-        #region VehiclesEquipments
-
-        public List<VehiclesEquipments> GetVehiclesEquipmentsRecords()
+        public Role GetRoleRecord(int Id)
         {
-            return _context.vehiclesEquipments.ToList();
+            return _context.role.FirstOrDefault(t => t.Id == Id);
         }
 
-        public VehiclesEquipments GetVehicleEquipmentRecord(int id)
+        public void AddRoleRecord(Role role)
         {
-            return _context.vehiclesEquipments.FirstOrDefault(t => t.id == id);
-        }
-
-        public void AddVehicleEquipmentRecord(VehiclesEquipments vehiclesEquipments)
-        {
-            _context.vehiclesEquipments.Add(vehiclesEquipments);
+            _context.role.Add(role);
             _context.SaveChanges();
         }
 
-        public void UpdateVehicleEquipmentRecord(VehiclesEquipments vehiclesEquipments)
+        public void UpdateRoleRecord(Role role)
         {
-            _context.vehiclesEquipments.Update(vehiclesEquipments);
+            _context.role.Update(role);
             _context.SaveChanges();
         }
-        public void DeleteVehicleEquipmentRecord(int id)
+        public void DeleteRoleRecord(int Id)
         {
-            var entity = _context.vehiclesEquipments.FirstOrDefault(t => t.id == id);
-            _context.vehiclesEquipments.Remove(entity);
+            var entity = _context.role.FirstOrDefault(t => t.Id == Id);
+            _context.role.Remove(entity);
             _context.SaveChanges();
         }
 
-        #endregion VehiclesEquipments
+        #endregion Role
+
+        #region Task
+
+        public List<Task> GetTaskRecords()
+        {
+            return _context.task.ToList();
+        }
+
+        public Task GetTaskRecord(int Id)
+        {
+            return _context.task.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddTaskRecord(Task task)
+        {
+            _context.task.Add(task);
+            _context.SaveChanges();
+        }
+
+        public void UpdateTaskRecord(Task task)
+        {
+            _context.task.Update(task);
+            _context.SaveChanges();
+        }
+        public void DeleteTaskRecord(int Id)
+        {
+            var entity = _context.task.FirstOrDefault(t => t.Id == Id);
+            _context.task.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Task
+
+        #region Type
+
+        public List<Redson_backend.Models.Type> GetTypeRecords()
+        {
+            return _context.type.ToList();
+        }
+
+        public Redson_backend.Models.Type GetTypeRecord(int Id)
+        {
+            return _context.type.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddTypeRecord(Redson_backend.Models.Type type)
+        {
+            _context.type.Add(type);
+            _context.SaveChanges();
+        }
+
+        public void UpdateTypeRecord(Redson_backend.Models.Type type)
+        {
+            _context.type.Update(type);
+            _context.SaveChanges();
+        }
+        public void DeleteTypeRecord(int Id)
+        {
+            var entity = _context.type.FirstOrDefault(t => t.Id == Id);
+            _context.type.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Type
+
+        #region User
+
+        public List<User> GetUserRecords()
+        {
+            return _context.user.ToList();
+        }
+
+        public User GetUserRecord(int Id)
+        {
+            return _context.user.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public static User GetUserByUserAndPassRecord(string username, string password)
+        {
+            return _scontext.user.Where(u => u.Username == username && u.Password == password).FirstOrDefault();
+        }
+
+        public void AddUserRecord(User user)
+        {
+            _context.user.Add(user);
+            _context.SaveChanges();
+        }
+
+        public void UpdateUserRecord(User user)
+        {
+            _context.user.Update(user);
+            _context.SaveChanges();
+        }
+        public void DeleteUserRecord(int Id)
+        {
+            var entity = _context.user.FirstOrDefault(t => t.Id == Id);
+            _context.user.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion User
+
+        #region Vehicle
+
+        public List<Vehicle> GetVehicleRecords()
+        {
+            return _context.vehicle.ToList();
+        }
+
+        public Vehicle GetVehicleRecord(int Id)
+        {
+            return _context.vehicle.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddVehicleRecord(Vehicle vehicle)
+        {
+            _context.vehicle.Add(vehicle);
+            _context.SaveChanges();
+        }
+
+        public void UpdateVehicleRecord(Vehicle vehicle)
+        {
+            _context.vehicle.Update(vehicle);
+            _context.SaveChanges();
+        }
+        public void DeleteVehicleRecord(int Id)
+        {
+            var entity = _context.vehicle.FirstOrDefault(t => t.Id == Id);
+            _context.vehicle.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Vehicle
+
+        #region VehicleModel
+
+        public List<VehicleModel> GetVehicleModelRecords()
+        {
+            return _context.vehicleModel.ToList();
+        }
+
+        public VehicleModel GetVehicleModelRecord(int Id)
+        {
+            return _context.vehicleModel.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddVehicleModelRecord(VehicleModel vehicleModel)
+        {
+            _context.vehicleModel.Add(vehicleModel);
+            _context.SaveChanges();
+        }
+
+        public void UpdateVehicleModelRecord(VehicleModel vehicleModel)
+        {
+            _context.vehicleModel.Update(vehicleModel);
+            _context.SaveChanges();
+        }
+        public void DeleteVehicleModelRecord(int Id)
+        {
+            var entity = _context.vehicleModel.FirstOrDefault(t => t.Id == Id);
+            _context.vehicleModel.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion VehicleModel
     }
 
 

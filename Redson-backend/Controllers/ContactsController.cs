@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ContactsController : ControllerBase
+    public class ContactsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public ContactsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Contact";
         }
 
         [HttpGet]
-        public IEnumerable<Contacts> Get()
+        public IEnumerable<Contact> Get()
         {
-            return _dataAccessProvider.GetContactsRecords();
+            return _dataAccessProvider.GetContactRecords();
         }
 
-        [HttpGet("{id}")]
-        public Contacts Details(int id)
+        [HttpGet("{Id}")]
+        public Contact Details(int Id)
         {
-            return _dataAccessProvider.GetContactRecord(id);
+            return _dataAccessProvider.GetContactRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Contacts contact)
+        public IActionResult Create([FromBody] Contact contact)
         {
-            if (ModelState.IsValid)
-            {
-                contact.updated_at = DateTime.Now;
-                _dataAccessProvider.AddContactRecord(contact);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(contact);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Contacts contact)
+        public IActionResult Edit([FromBody] Contact contact)
         {
-            if (ModelState.IsValid)
-            {
-                contact.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateContactRecord(contact);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var contact = _dataAccessProvider.GetContactRecord(id);
-            if (contact == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                contact.updated_at = DateTime.Now;
-                contact.is_deleted = true;
-                _dataAccessProvider.UpdateContactRecord(contact);
-            }
-            return Ok();
+            return UpdateEntity(contact);
         }
 
     }

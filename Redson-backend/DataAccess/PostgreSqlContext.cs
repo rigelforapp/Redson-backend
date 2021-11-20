@@ -14,29 +14,29 @@ namespace Redson_backend.DataAccess
         {
         }
 
-        public DbSet<Accounts> accounts { get; set; }
-        public DbSet<Countries> countries { get; set; }
-        public DbSet<Categories> categories { get; set; }
-        public DbSet<Comments> comments { get; set; }
-        public DbSet<Contacts> contacts { get; set; }
-        public DbSet<Currencies> currencies { get; set; }
-        public DbSet<Files> files { get; set; }
-        public DbSet<Groups> groups { get; set; }
-        public DbSet<Locations> locations { get; set; }
+        public DbSet<Account> account { get; set; }
+        public DbSet<Country> country { get; set; }
+        public DbSet<Category> category { get; set; }
+        public DbSet<Comment> comment { get; set; }
+        public DbSet<Contact> contact { get; set; }
+        public DbSet<Currency> currency { get; set; }
+        public DbSet<File> file { get; set; }
+        public DbSet<Group> group { get; set; }
+        public DbSet<Location> location { get; set; }
         public DbSet<OrderHistory> orderHistory { get; set; }
-        public DbSet<OrderItems> orderItems { get; set; }
-        public DbSet<Orders> orders { get; set; }
-        public DbSet<Organizations> organizations { get; set; }
-        public DbSet<PackageItems> packageItems { get; set; }
-        public DbSet<Packages> packages { get; set; }
-        public DbSet<Products> products { get; set; }
-        public DbSet<Roles> roles { get; set; }
-        public DbSet<Tasks> tasks { get; set; }
-        public DbSet<Types> types { get; set; }
-        public DbSet<Users> users { get; set; }
-        public DbSet<Vehicles> vehicles { get; set; }
-        public DbSet<VehicleModels> vehicleModels { get; set; }
-        public DbSet<VehiclesEquipments> vehiclesEquipments { get; set; }
+        public DbSet<OrderItem> orderItem { get; set; }
+        public DbSet<Order> order { get; set; }
+        public DbSet<Organization> organization { get; set; }
+        public DbSet<PackageItem> packageItem { get; set; }
+        public DbSet<Package> package { get; set; }
+        public DbSet<Product> product { get; set; }
+        public DbSet<Role> role { get; set; }
+        public DbSet<Redson_backend.Models.Task> task { get; set; }
+        public DbSet<Redson_backend.Models.Type> type { get; set; }
+        public DbSet<User> user { get; set; }
+        public DbSet<Vehicle> vehicle { get; set; }
+        public DbSet<VehicleModel> vehicleModel { get; set; }
+        public DbSet<VehiclesEquipments> vehiclesEquipment { get; set; }
 
         protected override void OnModelCreating(ModelBuilder builder)
         {

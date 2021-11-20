@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ProductsController : ControllerBase
+    public class ProductsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public ProductsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Product";
         }
 
         [HttpGet]
-        public IEnumerable<Products> Get()
+        public IEnumerable<Product> Get()
         {
-            return _dataAccessProvider.GetProductsRecords();
+            return _dataAccessProvider.GetProductRecords();
         }
 
-        [HttpGet("{id}")]
-        public Products Details(int id)
+        [HttpGet("{Id}")]
+        public Product Details(int Id)
         {
-            return _dataAccessProvider.GetProductRecord(id);
+            return _dataAccessProvider.GetProductRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Products product)
+        public IActionResult Create([FromBody] Product product)
         {
-            if (ModelState.IsValid)
-            {
-                product.updated_at = DateTime.Now;
-                _dataAccessProvider.AddProductRecord(product);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(product);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Products product)
+        public IActionResult Edit([FromBody] Product product)
         {
-            if (ModelState.IsValid)
-            {
-                product.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateProductRecord(product);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var product = _dataAccessProvider.GetProductRecord(id);
-            if (product == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                product.updated_at = DateTime.Now;
-                product.is_deleted = true;
-                _dataAccessProvider.UpdateProductRecord(product);
-            }
-            return Ok();
+            return UpdateEntity(product);
         }
 
     }

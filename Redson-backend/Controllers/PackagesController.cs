@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class PackagesController : ControllerBase
+    public class PackagesController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public PackagesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "Package";
         }
 
         [HttpGet]
-        public IEnumerable<Packages> Get()
+        public IEnumerable<Package> Get()
         {
-            return _dataAccessProvider.GetPackagesRecords();
+            return _dataAccessProvider.GetPackageRecords();
         }
 
-        [HttpGet("{id}")]
-        public Packages Details(int id)
+        [HttpGet("{Id}")]
+        public Package Details(int Id)
         {
-            return _dataAccessProvider.GetPackageRecord(id);
+            return _dataAccessProvider.GetPackageRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Packages package)
+        public IActionResult Create([FromBody] Package package)
         {
-            if (ModelState.IsValid)
-            {
-                package.updated_at = DateTime.Now;
-                _dataAccessProvider.AddPackageRecord(package);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(package);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Packages package)
+        public IActionResult Edit([FromBody] Package package)
         {
-            if (ModelState.IsValid)
-            {
-                package.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdatePackageRecord(package);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var package = _dataAccessProvider.GetPackageRecord(id);
-            if (package == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                package.updated_at = DateTime.Now;
-                package.is_deleted = true;
-                _dataAccessProvider.UpdatePackageRecord(package);
-            }
-            return Ok();
+            return UpdateEntity(package);
         }
 
     }

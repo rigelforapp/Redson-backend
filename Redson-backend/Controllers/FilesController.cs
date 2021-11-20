@@ -5,73 +5,45 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class FilesController : ControllerBase
+    public class FilesController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public FilesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType = "File";
         }
 
         [HttpGet]
-        public IEnumerable<Files> Get()
+        public IEnumerable<File> Get()
         {
-            return _dataAccessProvider.GetFilesRecords();
+            return _dataAccessProvider.GetFileRecords();
         }
 
-        [HttpGet("{id}")]
-        public Files Details(int id)
+        [HttpGet("{Id}")]
+        public File Details(int Id)
         {
-            return _dataAccessProvider.GetFileRecord(id);
+            return _dataAccessProvider.GetFileRecord(Id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Files file)
+        public IActionResult Create([FromBody] File file)
         {
-            if (ModelState.IsValid)
-            {
-                file.updated_at = DateTime.Now;
-                _dataAccessProvider.AddFileRecord(file);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(file);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Files file)
+        public IActionResult Edit([FromBody] File file)
         {
-            if (ModelState.IsValid)
-            {
-                file.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateFileRecord(file);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var file = _dataAccessProvider.GetFileRecord(id);
-            if (file == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                file.updated_at = DateTime.Now;
-                file.is_deleted = true;
-                _dataAccessProvider.UpdateFileRecord(file);
-            }
-            return Ok();
+            return UpdateEntity(file);
         }
 
     }
