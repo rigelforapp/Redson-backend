@@ -9,10 +9,12 @@ namespace Redson_backend.DataAccess
     public class DataAccessProvider: IDataAccessProvider
     {
         private readonly PostgreSqlContext _context;
+        static PostgreSqlContext _scontext;
 
         public DataAccessProvider(PostgreSqlContext context)
         {
             _context = context;
+            _scontext = context;
         }
 
         #region Accounts
@@ -635,6 +637,11 @@ namespace Redson_backend.DataAccess
             return _context.users.FirstOrDefault(t => t.id == id);
         }
 
+        public static Users GetUserByUserAndPassRecord(string username, string password)
+        {
+            return _scontext.users.Where(u => u.username==username && u.password==password).FirstOrDefault();
+        }
+
         public void AddUserRecord(Users users)
         {
             _context.users.Add(users);
@@ -751,4 +758,6 @@ namespace Redson_backend.DataAccess
 
         #endregion VehiclesEquipments
     }
+
+
 }

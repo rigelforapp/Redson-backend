@@ -5,20 +5,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using Redson_backend.DataAccess;
 using Redson_backend.Models;
+using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-
+    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
-    public class AccountsController : ControllerBase
+    public class AccountsController : GenericC
     {
-        private readonly IDataAccessProvider _dataAccessProvider;
 
         public AccountsController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
+            this.entityType     = "Account";
         }
 
         [HttpGet]
@@ -36,42 +37,13 @@ namespace Redson_backend.Controllers
         [HttpPost]
         public IActionResult Create([FromBody] Accounts account)
         {
-            if (ModelState.IsValid)
-            {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.AddAccountRecord(account);
-                return Ok();
-            }
-            return BadRequest();
+            return CreateEntity(account);
         }
 
         [HttpPut]
         public IActionResult Edit([FromBody] Accounts account)
         {
-            if (ModelState.IsValid)
-            {
-                account.updated_at = DateTime.Now;
-                _dataAccessProvider.UpdateAccountRecord(account);
-                return Ok();
-            }
-            return BadRequest();
-        }
-
-        [HttpDelete("{id}")]
-        public IActionResult DeleteConfirmed(int id)
-        {
-            var account = _dataAccessProvider.GetAccountRecord(id);
-            if (account == null)
-            {
-                return NotFound();
-            }
-            else
-            {
-                account.updated_at = DateTime.Now;
-                account.is_deleted = true;
-                _dataAccessProvider.UpdateAccountRecord(account);
-            }
-            return Ok();
+            return UpdateEntity(account);
         }
 
     }
