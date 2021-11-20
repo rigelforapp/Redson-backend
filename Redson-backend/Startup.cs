@@ -16,6 +16,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Microsoft.AspNetCore.Mvc;
 
 
 namespace Redson_backend
@@ -80,6 +81,11 @@ namespace Redson_backend
                 };
                 c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Redson_backend", Version = "v1" });
+            });
+
+            services.AddMvc().AddJsonOptions(options =>
+            {
+                options.JsonSerializerOptions.PropertyNamingPolicy = null;
             });
         }
 
