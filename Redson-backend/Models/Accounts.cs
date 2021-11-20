@@ -16,12 +16,12 @@ namespace Redson_backend.Models
     {
         public Account()
         {
-            /*Contacts = new HashSet<Contact>();
+            Contacts = new HashSet<Contact>();
             Locations = new HashSet<Location>();
             Organizations = new HashSet<Organization>();
             Packages = new HashSet<Package>();
             Products = new HashSet<Product>();
-            UsersXRoles = new HashSet<UsersXRole>();*/
+            UsersXRoles = new HashSet<UsersXRole>();
         }
 
         [Column("name")]

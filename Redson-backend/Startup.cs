@@ -83,10 +83,10 @@ namespace Redson_backend
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Redson_backend", Version = "v1" });
             });
 
-            services.AddMvc().AddJsonOptions(options =>
+            /*services.AddMvc().AddJsonOptions(options =>
             {
                 options.JsonSerializerOptions.PropertyNamingPolicy = null;
-            });
+            });*/
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
