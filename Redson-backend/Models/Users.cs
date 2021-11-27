@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using Microsoft.EntityFrameworkCore;
+using System.Runtime.Serialization;
 
 #nullable disable
 
@@ -15,7 +16,7 @@ namespace Redson_backend.Models
     {
         public User()
         {
-            AccountCreatedBies = new HashSet<Account>();
+            /*AccountCreatedBies = new HashSet<Account>();
             AccountUpdatedBies = new HashSet<Account>();
             CommentCreatedBies = new HashSet<Comment>();
             CommentUpdatedBies = new HashSet<Comment>();
@@ -52,9 +53,12 @@ namespace Redson_backend.Models
             Tasks = new HashSet<Task>();
             UsersXRoles = new HashSet<UsersXRole>();
             VehicleCreatedBies = new HashSet<Vehicle>();
-            VehicleUpdatedBies = new HashSet<Vehicle>();
+            VehicleUpdatedBies = new HashSet<Vehicle>();*/
         }
 
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -77,7 +81,7 @@ namespace Redson_backend.Models
         [StringLength(255)]
         public string SessionToken { get; set; }
 
-        [ForeignKey(nameof(CreatedById))]
+        /*[ForeignKey(nameof(CreatedById))]
         [InverseProperty(nameof(User.InverseCreatedBy))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(UpdatedById))]
@@ -158,6 +162,6 @@ namespace Redson_backend.Models
         [InverseProperty(nameof(Vehicle.CreatedBy))]
         public virtual ICollection<Vehicle> VehicleCreatedBies { get; set; }
         [InverseProperty(nameof(Vehicle.UpdatedBy))]
-        public virtual ICollection<Vehicle> VehicleUpdatedBies { get; set; }
+        public virtual ICollection<Vehicle> VehicleUpdatedBies { get; set; }*/
     }
 }

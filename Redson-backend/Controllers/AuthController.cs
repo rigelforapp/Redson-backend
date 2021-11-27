@@ -11,44 +11,100 @@ using Microsoft.AspNetCore.Authorization;
 using Redson_backend.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
+using Redson_backend.Models;
 
 namespace Redson_backend
 {
     public interface IJWTAuthenticationManager
     {
-        string Authenticate(string username, string password);
+
     }
 
-    public class JWTAuthenticationManager : IJWTAuthenticationManager
+    public class JWTAuthenticationManager: IJWTAuthenticationManager
     {
-        IDictionary<string, string> users = new Dictionary<string, string>
-        {
-            { "test1", "password1" },
-            { "test2", "password2" }
-        };
-
-        private readonly string tokenKey;
+        public static string tokenKey;
 
         public JWTAuthenticationManager(string tokenKey)
         {
-            this.tokenKey = tokenKey;
+            JWTAuthenticationManager.tokenKey = tokenKey;
         }
+    }
 
-        public string Authenticate(string username, string password)
+    public class UserCred
+    {
+        public string Username { get; set; }
+        public string Password { get; set; }
+        public string Email { get; set; }
+    }
+}
+
+
+namespace Redson_backend.Controllers
+{
+    [Route("api/[controller]")]
+    [ApiController]
+    public class AuthenticateController : ControllerBase
+    {
+        public AuthenticateController(IDataAccessProvider dataAccessProvider)
         {
-            
-            if (!users.Any(u => u.Key == username && u.Value == password))
+            _dataAccessProvider = dataAccessProvider;
+        }
+        public IDataAccessProvider _dataAccessProvider;
+        [HttpPost]
+        public IActionResult Authenticate([FromBody] UserCred userCred)
+        {
+            if (userCred.Email == null && userCred.Username == null)
             {
-                return null;
+                return BadRequest("Username or Email not found");
             }
 
+            if (userCred.Password == null)
+            {
+                return BadRequest("Password not found");
+            }
+            else {
+                userCred.Password = EncodePasswordToBase64(userCred.Password);
+            }
+
+            Redson_backend.Models.User userToAuth = null;
+            var context = _dataAccessProvider.GetContext();
+
+            if (userCred.Email == null)            {
+                
+                userToAuth = context.user.Where(u => u.Username == userCred.Username && u.Password == userCred.Password).FirstOrDefault();                
+            }
+            else {
+                userToAuth = context.user.Where(u => u.Email == userCred.Email && u.Password == userCred.Password).FirstOrDefault();
+            }
+
+            if (userToAuth == null)
+            {
+                userToAuth = InsertSuperAdmin();
+
+                if (userToAuth == null)
+                {
+                    return BadRequest("User not found");
+                }                
+            }
+
+            userToAuth.SessionToken = GetToken();
+            context.user.Update(userToAuth);
+            context.SaveChanges();
+            userToAuth.Password = "";
+
+            return Ok(userToAuth);
+
+        }
+
+        protected string GetToken()
+        {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes(tokenKey);
+            var key = Encoding.ASCII.GetBytes(JWTAuthenticationManager.tokenKey);
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                 {
-                    new Claim(ClaimTypes.Name, username)
+                    new Claim(ClaimTypes.Name, "")
                 }),
                 Expires = DateTime.UtcNow.AddHours(1),
                 SigningCredentials = new SigningCredentials(
@@ -58,42 +114,59 @@ namespace Redson_backend
             var token = tokenHandler.CreateToken(tokenDescriptor);
             return tokenHandler.WriteToken(token);
         }
-    }
 
-    [Route("api/[controller]")]
-    [ApiController]
-    public class AuthController : ControllerBase
-    {
-        private readonly IJWTAuthenticationManager jWTAuthenticationManager;
-
-        public AuthController(IJWTAuthenticationManager jWTAuthenticationManager)
+        protected Models.User InsertSuperAdmin()
         {
-            this.jWTAuthenticationManager = jWTAuthenticationManager;
+            var context = _dataAccessProvider.GetContext();
+            var userList = context.user.ToList();
+            if (userList.Count == 0)
+            {
+                Models.User superAdmin = new Models.User();
+                superAdmin.Name = "Redson Super Admin";
+                superAdmin.Email = "admin@redson.com";
+                superAdmin.Password = EncodePasswordToBase64("redsonadmin");
+                superAdmin.Username = "redsonadmin";
+                superAdmin.CreatedAt = DateTime.Now;
+                superAdmin.UpdatedAt = DateTime.Now;
+                superAdmin.IsActive = true;
+                superAdmin.IsDeleted = false;
+
+                context.user.Add(superAdmin);
+                context.SaveChanges();
+                return superAdmin;
+            }
+            else {
+                return null;
+            }
         }
 
-        [AllowAnonymous]
-        [HttpPost("authenticate")]
-        public IActionResult Authenticate([FromBody] UserCred userCred)
+        //this function Convert to Encord your Password 
+        protected static string EncodePasswordToBase64(string password)
         {
-            var token = jWTAuthenticationManager.Authenticate(userCred.Username, userCred.Password);
+            try
+            {
+                byte[] encData_byte = new byte[password.Length];
+                encData_byte = System.Text.Encoding.UTF8.GetBytes(password);
+                string encodedData = Convert.ToBase64String(encData_byte);
+                return encodedData;
+            }
+            catch (Exception ex)
+            {
+                throw new Exception("Error in base64Encode" + ex.Message);
+            }
+        }
 
-            if (token == null)
-                return Unauthorized();
-
-            return Ok(token);
+        //this function Convert to Decord your Password
+        protected string DecodeFrom64(string encodedData)
+        {
+            System.Text.UTF8Encoding encoder = new System.Text.UTF8Encoding();
+            System.Text.Decoder utf8Decode = encoder.GetDecoder();
+            byte[] todecode_byte = Convert.FromBase64String(encodedData);
+            int charCount = utf8Decode.GetCharCount(todecode_byte, 0, todecode_byte.Length);
+            char[] decoded_char = new char[charCount];
+            utf8Decode.GetChars(todecode_byte, 0, todecode_byte.Length, decoded_char, 0);
+            string result = new String(decoded_char);
+            return result;
         }
     }
-
-    public class UserCred
-    {
-        public string Username { get; set; }
-        public string Password { get; set; }
-    }
-}
-
-
-namespace Redson_backend.Controllers
-{
-
-    
 }

@@ -17,9 +17,12 @@ namespace Redson_backend.Models
     {
         public OrderItem()
         {
-            Tasks = new HashSet<Task>();
+            //Tasks = new HashSet<Task>();
         }
 
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("order_id")]
         public int? OrderId { get; set; }
         [Column("name")]
@@ -64,8 +67,8 @@ namespace Redson_backend.Models
         [Column("serviced_by_id")]
         public int? ServicedById { get; set; }
 
-        [ForeignKey(nameof(CreatedById))]
-        [InverseProperty(nameof(User.OrderItemCreatedBies))]
+        /*[ForeignKey(nameof(CreatedById))]
+        //[InverseProperty(nameof(User.OrderItemCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(OrderId))]
         [InverseProperty("OrderItems")]
@@ -77,15 +80,15 @@ namespace Redson_backend.Models
         [InverseProperty(nameof(Organization.OrderItems))]
         public virtual Organization ServicedBy { get; set; }
         [ForeignKey(nameof(TechnicianId))]
-        [InverseProperty(nameof(User.OrderItemTechnicians))]
+        //[InverseProperty(nameof(User.OrderItemTechnicians))]
         public virtual User Technician { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        [InverseProperty(nameof(User.OrderItemUpdatedBies))]
+        //[InverseProperty(nameof(User.OrderItemUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [ForeignKey(nameof(VehicleId))]
         [InverseProperty("OrderItems")]
         public virtual Vehicle Vehicle { get; set; }
         [InverseProperty(nameof(Task.Entity1))]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task> Tasks { get; set; }*/
     }
 }

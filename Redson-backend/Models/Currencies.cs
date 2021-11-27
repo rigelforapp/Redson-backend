@@ -16,10 +16,13 @@ namespace Redson_backend.Models
     {
         public Currency()
         {
-            Accounts = new HashSet<Account>();
-            Orders = new HashSet<Order>();
+            /*Accounts = new HashSet<Account>();
+            Orders = new HashSet<Order>();*/
         }
 
+        /*[Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;*/
         [Column("delete")]
         public bool? Delete { get; set; }
         [Column("code")]
@@ -43,18 +46,18 @@ namespace Redson_backend.Models
         [Column("country_id")]
         public int? CountryId { get; set; }
 
-        [ForeignKey(nameof(CountryId))]
+        /*[ForeignKey(nameof(CountryId))]
         [InverseProperty("Currencies")]
         public virtual Country Country { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        [InverseProperty(nameof(User.CurrencyCreatedBies))]
+        //[InverseProperty(nameof(User.CurrencyCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        [InverseProperty(nameof(User.CurrencyUpdatedBies))]
+        //[InverseProperty(nameof(User.CurrencyUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(Account.Currency))]
         public virtual ICollection<Account> Accounts { get; set; }
         [InverseProperty(nameof(Order.Currency))]
-        public virtual ICollection<Order> Orders { get; set; }
+        public virtual ICollection<Order> Orders { get; set; }*/
     }
 }

@@ -19,12 +19,15 @@ namespace Redson_backend.Models
     {
         public Order()
         {
-            Comments = new HashSet<Comment>();
+            /*Comments = new HashSet<Comment>();
             OrderHistories = new HashSet<OrderHistory>();
             OrderItems = new HashSet<OrderItem>();
-            Tasks = new HashSet<Task>();
+            Tasks = new HashSet<Task>();*/
         }
 
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("number")]
         [StringLength(50)]
         public string Number { get; set; }
@@ -108,11 +111,11 @@ namespace Redson_backend.Models
         [StringLength(255)]
         public string Token { get; set; }
 
-        [ForeignKey(nameof(ContactId))]
+        /*ForeignKey(nameof(ContactId))]
         [InverseProperty("Orders")]
         public virtual Contact Contact { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        [InverseProperty(nameof(User.OrderCreatedBies))]
+        //[InverseProperty(nameof(User.OrderCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(CurrencyId))]
         [InverseProperty("Orders")]
@@ -124,16 +127,16 @@ namespace Redson_backend.Models
         [InverseProperty("Orders")]
         public virtual Organization Organization { get; set; }
         [ForeignKey(nameof(OwnerId))]
-        [InverseProperty(nameof(User.OrderOwners))]
+        //[InverseProperty(nameof(User.OrderOwners))]
         public virtual User Owner { get; set; }
         [ForeignKey(nameof(TechnicianId))]
-        [InverseProperty(nameof(User.OrderTechnicians))]
+        //[InverseProperty(nameof(User.OrderTechnicians))]
         public virtual User Technician { get; set; }
         [ForeignKey(nameof(TypeId))]
         [InverseProperty("Orders")]
         public virtual Type Type { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        [InverseProperty(nameof(User.OrderUpdatedBies))]
+        //[InverseProperty(nameof(User.OrderUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [ForeignKey(nameof(VehicleId))]
         [InverseProperty("Orders")]
@@ -145,6 +148,6 @@ namespace Redson_backend.Models
         [InverseProperty(nameof(OrderItem.Order))]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         [InverseProperty(nameof(Task.EntityNavigation))]
-        public virtual ICollection<Task> Tasks { get; set; }
+        public virtual ICollection<Task> Tasks { get; set; }*/
     }
 }

@@ -17,11 +17,14 @@ namespace Redson_backend.Models
     {
         public Vehicle()
         {
-            OrderItems = new HashSet<OrderItem>();
+            /*OrderItems = new HashSet<OrderItem>();
             Orders = new HashSet<Order>();
-            VehiclesCustomFields = new HashSet<VehiclesCustomField>();
+            VehiclesCustomFields = new HashSet<VehiclesCustomField>();*/
         }
 
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("number")]
         [StringLength(50)]
         public string Number { get; set; }
@@ -89,11 +92,11 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        [ForeignKey(nameof(ContactId))]
+        /*[ForeignKey(nameof(ContactId))]
         [InverseProperty("Vehicles")]
         public virtual Contact Contact { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        [InverseProperty(nameof(User.VehicleCreatedBies))]
+        //[InverseProperty(nameof(User.VehicleCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(GroupId))]
         [InverseProperty("Vehicles")]
@@ -105,13 +108,13 @@ namespace Redson_backend.Models
         [InverseProperty("Vehicles")]
         public virtual Type Type { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        [InverseProperty(nameof(User.VehicleUpdatedBies))]
+        //[InverseProperty(nameof(User.VehicleUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(OrderItem.Vehicle))]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         [InverseProperty(nameof(Order.Vehicle))]
         public virtual ICollection<Order> Orders { get; set; }
         [InverseProperty(nameof(VehiclesCustomField.Vehicle))]
-        public virtual ICollection<VehiclesCustomField> VehiclesCustomFields { get; set; }
+        public virtual ICollection<VehiclesCustomField> VehiclesCustomFields { get; set; }*/
     }
 }

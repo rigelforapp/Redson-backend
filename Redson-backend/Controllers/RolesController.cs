@@ -12,35 +12,35 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class LocationsController : GenericC
+    public class RolesController : GenericC
     {
 
-        public LocationsController(IDataAccessProvider dataAccessProvider)
+        public RolesController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
-            this.entityType = "Location";
+            this.entityType = "Role";
         }
 
         [HttpGet]
-        public IEnumerable<Location> Get()
+        public IEnumerable<Role> Get()
         {
-            return (List<Location>)GetAllEntities();
+            return (List<Role>)GetAllEntities();
         }
 
         [HttpGet("{id}")]
-        public Location Details(int id)
+        public Role Details(int id)
         {
-            return (Location)GetEntity(id);
+            return (Role)GetEntity(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Location entity)
+        public IActionResult Create([FromBody] Role entity)
         {
             return CreateEntity(entity);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Location entity)
+        public IActionResult Edit([FromBody] Role entity)
         {
             return UpdateEntity(entity);
         }

@@ -34,6 +34,7 @@ namespace Redson_backend.DataAccess
         public DbSet<Redson_backend.Models.Task> task { get; set; }
         public DbSet<Redson_backend.Models.Type> type { get; set; }
         public DbSet<User> user { get; set; }
+        public DbSet<UsersXRole> userxrole { get; set; }
         public DbSet<Vehicle> vehicle { get; set; }
         public DbSet<VehicleModel> vehicleModel { get; set; }
         public DbSet<VehiclesEquipments> vehiclesEquipment { get; set; }
@@ -41,6 +42,8 @@ namespace Redson_backend.DataAccess
         protected override void OnModelCreating(ModelBuilder builder)
         {
             base.OnModelCreating(builder);
+            builder.Entity<UsersXRole>()
+                .HasKey(e => new { e.RoleId, e.UserId, e.AccountId });
         }
 
         public override int SaveChanges()

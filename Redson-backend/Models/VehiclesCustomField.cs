@@ -11,6 +11,9 @@ namespace Redson_backend.Models
     [Table("vehicles_custom_fields")]
     public partial class VehiclesCustomField : Base
     {
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("vehicle_id")]
         public int? VehicleId { get; set; }
         [Column("name")]
@@ -20,8 +23,8 @@ namespace Redson_backend.Models
         [StringLength(500)]
         public string Content { get; set; }
 
-        [ForeignKey(nameof(VehicleId))]
+        /*[ForeignKey(nameof(VehicleId))]
         [InverseProperty("VehiclesCustomFields")]
-        public virtual Vehicle Vehicle { get; set; }
+        public virtual Vehicle Vehicle { get; set; }*/
     }
 }

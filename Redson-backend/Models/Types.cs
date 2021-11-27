@@ -13,15 +13,18 @@ namespace Redson_backend.Models
     {
         public Type()
         {
-            Accounts = new HashSet<Account>();
+            /*Accounts = new HashSet<Account>();
             Groups = new HashSet<Group>();
             Manufacturers = new HashSet<Manufacturer>();
             Orders = new HashSet<Order>();
             Products = new HashSet<Product>();
             Tasks = new HashSet<Task>();
-            Vehicles = new HashSet<Vehicle>();
+            Vehicles = new HashSet<Vehicle>();*/
         }
 
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -31,7 +34,7 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        [InverseProperty(nameof(Account.Type))]
+        /*[InverseProperty(nameof(Account.Type))]
         public virtual ICollection<Account> Accounts { get; set; }
         [InverseProperty(nameof(Group.Type))]
         public virtual ICollection<Group> Groups { get; set; }
@@ -44,6 +47,6 @@ namespace Redson_backend.Models
         [InverseProperty(nameof(Task.Type))]
         public virtual ICollection<Task> Tasks { get; set; }
         [InverseProperty(nameof(Vehicle.Type))]
-        public virtual ICollection<Vehicle> Vehicles { get; set; }
+        public virtual ICollection<Vehicle> Vehicles { get; set; }*/
     }
 }

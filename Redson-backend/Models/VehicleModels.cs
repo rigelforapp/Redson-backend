@@ -11,6 +11,9 @@ namespace Redson_backend.Models
     [Table("vehicle_models")]
     public partial class VehicleModel : Base
     {
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("manufacturer_id")]
         public int? ManufacturerId { get; set; }
         [Column("name")]
@@ -19,8 +22,8 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        [ForeignKey(nameof(ManufacturerId))]
+        /*[ForeignKey(nameof(ManufacturerId))]
         [InverseProperty("VehicleModels")]
-        public virtual Manufacturer Manufacturer { get; set; }
+        public virtual Manufacturer Manufacturer { get; set; }*/
     }
 }

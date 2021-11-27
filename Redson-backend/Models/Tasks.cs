@@ -11,6 +11,9 @@ namespace Redson_backend.Models
     [Table("tasks")]
     public partial class Task : Base
     {
+        [Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -57,8 +60,8 @@ namespace Redson_backend.Models
         [Column("entity_id")]
         public int? EntityId { get; set; }
 
-        [ForeignKey(nameof(AssignedToId))]
-        [InverseProperty(nameof(User.Tasks))]
+        /*[ForeignKey(nameof(AssignedToId))]
+        //[InverseProperty(nameof(User.Tasks))]
         public virtual User AssignedTo { get; set; }
         [ForeignKey(nameof(EntityId))]
         [InverseProperty(nameof(OrderItem.Tasks))]
@@ -68,6 +71,6 @@ namespace Redson_backend.Models
         public virtual Order EntityNavigation { get; set; }
         [ForeignKey(nameof(TypeId))]
         [InverseProperty("Tasks")]
-        public virtual Type Type { get; set; }
+        public virtual Type Type { get; set; }*/
     }
 }

@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -25,25 +24,25 @@ namespace Redson_backend.Controllers
         [HttpGet]
         public IEnumerable<File> Get()
         {
-            return _dataAccessProvider.GetFileRecords();
+            return (List<File>)GetAllEntities();
         }
 
-        [HttpGet("{Id}")]
-        public File Details(int Id)
+        [HttpGet("{id}")]
+        public File Details(int id)
         {
-            return _dataAccessProvider.GetFileRecord(Id);
+            return (File)GetEntity(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] File file)
+        public IActionResult Create([FromBody] File entity)
         {
-            return CreateEntity(file);
+            return CreateEntity(entity);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] File file)
+        public IActionResult Edit([FromBody] File entity)
         {
-            return UpdateEntity(file);
+            return UpdateEntity(entity);
         }
 
     }

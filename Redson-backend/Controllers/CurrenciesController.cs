@@ -9,7 +9,6 @@ using Microsoft.AspNetCore.Authorization;
 
 namespace Redson_backend.Controllers
 {
-    [Authorize]
     [Route("api/[controller]")]
     [ApiController]
 
@@ -25,25 +24,25 @@ namespace Redson_backend.Controllers
         [HttpGet]
         public IEnumerable<Currency> Get()
         {
-            return _dataAccessProvider.GetCurrencyRecords();
+            return (List<Currency>)GetAllEntities();
         }
 
-        [HttpGet("{Id}")]
-        public Currency Details(int Id)
+        [HttpGet("{id}")]
+        public Currency Details(int id)
         {
-            return _dataAccessProvider.GetCurrencyRecord(Id);
+            return (Currency)GetEntity(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Currency currency)
+        public IActionResult Create([FromBody] Currency entity)
         {
-            return CreateEntity(currency);
+            return CreateEntity(entity);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Currency currency)
+        public IActionResult Edit([FromBody] Currency entity)
         {
-            return UpdateEntity(currency);
+            return UpdateEntity(entity);
         }
 
     }

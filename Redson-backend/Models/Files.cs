@@ -13,11 +13,14 @@ namespace Redson_backend.Models
     {
         public File()
         {
-            Accounts = new HashSet<Account>();
+            /*Accounts = new HashSet<Account>();
             CommentsXFiles = new HashSet<CommentsXFile>();
-            Contacts = new HashSet<Contact>();
+            Contacts = new HashSet<Contact>();*/
         }
 
+        /*[Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;*/
         [Column("filename")]
         [StringLength(255)]
         public string Filename { get; set; }
@@ -45,11 +48,11 @@ namespace Redson_backend.Models
         [StringLength(20)]
         public string ParentType { get; set; }
 
-        [InverseProperty(nameof(Account.Photo))]
+        /*[InverseProperty(nameof(Account.Photo))]
         public virtual ICollection<Account> Accounts { get; set; }
         [InverseProperty(nameof(CommentsXFile.File))]
         public virtual ICollection<CommentsXFile> CommentsXFiles { get; set; }
         [InverseProperty(nameof(Contact.Photo))]
-        public virtual ICollection<Contact> Contacts { get; set; }
+        public virtual ICollection<Contact> Contacts { get; set; }*/
     }
 }

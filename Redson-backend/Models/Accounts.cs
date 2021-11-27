@@ -16,14 +16,17 @@ namespace Redson_backend.Models
     {
         public Account()
         {
-            Contacts = new HashSet<Contact>();
+            /*Contacts = new HashSet<Contact>();
             Locations = new HashSet<Location>();
             Organizations = new HashSet<Organization>();
             Packages = new HashSet<Package>();
             Products = new HashSet<Product>();
-            UsersXRoles = new HashSet<UsersXRole>();
+            UsersXRoles = new HashSet<UsersXRole>();*/
         }
 
+        /*[Key]
+        [Column("id")]
+        public int? Id { get; set; } = null;*/
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -77,11 +80,11 @@ namespace Redson_backend.Models
         [Column("currency_id")]
         public int? CurrencyId { get; set; }
 
-        [ForeignKey(nameof(CategoryId))]
+        /*[ForeignKey(nameof(CategoryId))]
         [InverseProperty("Accounts")]
         public virtual Category Category { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        [InverseProperty(nameof(User.AccountCreatedBies))]
+        //[InverseProperty(nameof(User.AccountCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(CurrencyId))]
         [InverseProperty("Accounts")]
@@ -93,7 +96,7 @@ namespace Redson_backend.Models
         [InverseProperty("Accounts")]
         public virtual Type Type { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        [InverseProperty(nameof(User.AccountUpdatedBies))]
+        //[InverseProperty(nameof(User.AccountUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(Contact.Account))]
         public virtual ICollection<Contact> Contacts { get; set; }
@@ -106,6 +109,6 @@ namespace Redson_backend.Models
         [InverseProperty(nameof(Product.Account))]
         public virtual ICollection<Product> Products { get; set; }
         [InverseProperty(nameof(UsersXRole.Account))]
-        public virtual ICollection<UsersXRole> UsersXRoles { get; set; }
+        public virtual ICollection<UsersXRole> UsersXRoles { get; set; }*/
     }
 }

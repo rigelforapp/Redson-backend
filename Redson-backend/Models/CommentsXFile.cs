@@ -18,11 +18,11 @@ namespace Redson_backend.Models
         [Column("file_id")]
         public int FileId { get; set; }
 
-        [ForeignKey(nameof(CommentId))]
+        /*[ForeignKey(nameof(CommentId))]
         [InverseProperty("CommentsXFiles")]
         public virtual Comment Comment { get; set; }
         [ForeignKey(nameof(FileId))]
         [InverseProperty("CommentsXFiles")]
-        public virtual File File { get; set; }
+        public virtual File File { get; set; }*/
     }
 }
