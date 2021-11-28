@@ -71,7 +71,7 @@ namespace Redson_backend
             {
                 // Set the custom operation filter
                 // Add JWT Authentication
-                var securityScheme = new OpenApiSecurityScheme
+                /*var securityScheme = new OpenApiSecurityScheme
                 {
                     Name = "JWT Authentication",
                     Description = "Enter JWT Bearer token **_only_**",
@@ -85,7 +85,7 @@ namespace Redson_backend
                         Type = ReferenceType.SecurityScheme
                     }
                 };
-                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);
+                c.AddSecurityDefinition(securityScheme.Reference.Id, securityScheme);*/
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Redson_backend", Version = "v1" });
             });
 
@@ -100,11 +100,16 @@ namespace Redson_backend
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
         {
-            if (env.IsDevelopment())
-            {
+            //if (env.IsDevelopment())
+            //{
                 app.UseDeveloperExceptionPage();
                 app.UseSwagger();
                 app.UseSwaggerUI(c => c.SwaggerEndpoint("/swagger/v1/swagger.json", "Redson_backend v1"));
+            //}
+
+            if (!env.IsDevelopment())
+            {
+                app.UseExceptionHandler("/error");
             }
 
             app.UseHttpsRedirection();
