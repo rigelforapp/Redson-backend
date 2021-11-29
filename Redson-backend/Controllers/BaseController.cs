@@ -153,7 +153,7 @@ namespace Redson_backend.Controllers
             }
             return Ok();
         }
-
+        
         private Base CastType(object obj)
         {
             switch (this.entityType)

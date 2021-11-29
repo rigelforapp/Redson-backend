@@ -50,51 +50,69 @@ namespace Redson_backend.Controllers
             _dataAccessProvider = dataAccessProvider;
         }
         public IDataAccessProvider _dataAccessProvider;
+        
         [HttpPost]
         public IActionResult Authenticate([FromBody] UserCred userCred)
         {
-            if (userCred.Email == null && userCred.Username == null)
+            try
             {
-                return BadRequest("Username or Email not found");
-            }
+                if (userCred.Email == null && userCred.Username == null)
+                {
+                    return BadRequest("Username or Email not found");
+                }
 
-            if (userCred.Password == null)
-            {
-                return BadRequest("Password not found");
-            }
-            else {
-                userCred.Password = EncodePasswordToBase64(userCred.Password);
-            }
+                if (userCred.Password == null)
+                {
+                    return BadRequest("Password not found");
+                }
+                else
+                {
+                    userCred.Password = EncodePasswordToBase64(userCred.Password);
+                }
 
-            Redson_backend.Models.User userToAuth = null;
-            var context = _dataAccessProvider.GetContext();
+                Redson_backend.Models.User userToAuth = null;
+                var context = _dataAccessProvider.GetContext();
 
-            if (userCred.Email == null)            {
-                
-                userToAuth = context.user.Where(u => u.Username == userCred.Username && u.Password == userCred.Password).FirstOrDefault();                
-            }
-            else {
-                userToAuth = context.user.Where(u => u.Email == userCred.Email && u.Password == userCred.Password).FirstOrDefault();
-            }
+                if (userCred.Email == null)
+                {
 
-            if (userToAuth == null)
-            {
-                userToAuth = InsertSuperAdmin();
+                    userToAuth = context.user.Where(u => u.Username == userCred.Username && u.Password == userCred.Password).FirstOrDefault();
+                }
+                else
+                {
+                    userToAuth = context.user.Where(u => u.Email == userCred.Email && u.Password == userCred.Password).FirstOrDefault();
+                }
 
                 if (userToAuth == null)
                 {
-                    return BadRequest("User not found");
-                }                
+                    userToAuth = InsertSuperAdmin();
+
+                    if (userToAuth == null)
+                    {
+                        return BadRequest("User not found");
+                    }
+                }
+
+                userToAuth.SessionToken = GetToken();
+                context.user.Update(userToAuth);
+                context.SaveChanges();
+                userToAuth.Password = "";
+
+                return Ok(userToAuth);
+            }
+            catch (Exception ex)
+            {
+                Problem(ex.Message);
+                throw;
             }
 
-            userToAuth.SessionToken = GetToken();
-            context.user.Update(userToAuth);
-            context.SaveChanges();
-            userToAuth.Password = "";
-
-            return Ok(userToAuth);
-
         }
+
+        [HttpGet]
+        public IActionResult JustOK() { 
+            return Ok("Test Api ok");
+        }
+            
 
         protected string GetToken()
         {
