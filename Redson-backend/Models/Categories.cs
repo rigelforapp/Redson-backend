@@ -13,14 +13,11 @@ namespace Redson_backend.Models
     {
         public Category()
         {
-            /*Accounts = new HashSet<Account>();
+            Accounts = new HashSet<Account>();
             Organizations = new HashSet<Organization>();
-            Products = new HashSet<Product>();*/
+            Products = new HashSet<Product>();
         }
 
-        /*[Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;*/
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -32,11 +29,11 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[InverseProperty(nameof(Account.Category))]
+        [InverseProperty(nameof(Account.Category))]
         public virtual ICollection<Account> Accounts { get; set; }
         [InverseProperty(nameof(Organization.Category))]
         public virtual ICollection<Organization> Organizations { get; set; }
         [InverseProperty(nameof(Product.Category))]
-        public virtual ICollection<Product> Products { get; set; }*/
+        public virtual ICollection<Product> Products { get; set; }
     }
 }

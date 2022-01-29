@@ -64,6 +64,12 @@ namespace Redson_backend.DataAccess
         void UpdateLocationRecord(Location accounts);
         void DeleteLocationRecord(int id);
 
+        List<Manufacturer> GetManufacturerRecords(DataAccessProvidesParameters dapp);
+        Manufacturer GetManufacturerRecord(int id);
+        void AddManufacturerRecord(Manufacturer accounts);
+        void UpdateManufacturerRecord(Manufacturer accounts);
+        void DeleteManufacturerRecord(int id);
+
         List<OrderHistory> GetOrderHistoryRecords(DataAccessProvidesParameters dapp);
         OrderHistory GetOrderHistoryRecord(int id);
         void AddOrderHistoryRecord(OrderHistory accounts);
@@ -131,7 +137,7 @@ namespace Redson_backend.DataAccess
         void DeleteUserRecord(int id);
 
         List<UsersXRole> GetUsersXRoleRecords(DataAccessProvidesParameters dapp);
-        UsersXRole GetUsersXRoleRecord(int id);
+        UsersXRole GetUsersXRoleRecord(UsersXRole usersXRole);
         void AddUsersXRoleRecord(UsersXRole accounts);
         void UpdateUsersXRoleRecord(UsersXRole accounts);
         void DeleteUsersXRoleRecord(int id);

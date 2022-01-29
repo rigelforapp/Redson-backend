@@ -16,8 +16,8 @@ namespace Redson_backend.Models
     {
         public Contact()
         {
-            /*Orders = new HashSet<Order>();
-            Vehicles = new HashSet<Vehicle>();*/
+            Orders = new HashSet<Order>();
+            Vehicles = new HashSet<Vehicle>();
         }
 
         /*[Key]
@@ -100,30 +100,42 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(AccountId))]
+        [ForeignKey(nameof(AccountId))]
         [InverseProperty("Contacts")]
         public virtual Account Account { get; set; }
+        
         [ForeignKey(nameof(CreatedById))]
-        //[InverseProperty("ContactCreatedBies")]
+        [InverseProperty("ContactCreatedBies")]
         public virtual User CreatedBy { get; set; }
+        
         [ForeignKey(nameof(GroupId))]
         [InverseProperty("Contacts")]
         public virtual Group Group { get; set; }
+        
         [ForeignKey(nameof(OrganizationId))]
         [InverseProperty("Contacts")]
         public virtual Organization Organization { get; set; }
+        
         [ForeignKey(nameof(PhotoId))]
         [InverseProperty(nameof(File.Contacts))]
         public virtual File Photo { get; set; }
+        
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty("ContactUpdatedBies")]
+        [InverseProperty("ContactUpdatedBies")]
         public virtual User UpdatedBy { get; set; }
+        
         [ForeignKey(nameof(UserId))]
-        //[InverseProperty("ContactUsers")]
+        [InverseProperty("ContactUsers")]
         public virtual User User { get; set; }
+
+        [ForeignKey(nameof(OwnerId))]
+        //[InverseProperty(nameof(User.ContactOwners))]
+        public virtual User Owner { get; set; }
+
         [InverseProperty(nameof(Order.Contact))]
         public virtual ICollection<Order> Orders { get; set; }
+        
         [InverseProperty(nameof(Vehicle.Contact))]
-        public virtual ICollection<Vehicle> Vehicles { get; set; }*/
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

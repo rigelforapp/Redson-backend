@@ -12,38 +12,38 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class VehiclesController : GenericC
+    public class ManufacturerController : GenericC
     {
 
-        public VehiclesController(IDataAccessProvider dataAccessProvider)
+        public ManufacturerController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
-            this.entityType = "Vehicle";
+            this.entityType = "Manufacturer";
         }
 
         [HttpGet]
-        public IEnumerable<Vehicle> Get()
+        public IEnumerable<Manufacturer> Get()
         {
-            return (List<Vehicle>)GetAllEntities();
+            return (List<Manufacturer>)GetAllEntities();
         }
 
         [HttpGet("{id}")]
-        public Vehicle Details(int id)
+        public Manufacturer Details(int id)
         {
-            return (Vehicle)GetEntity(id);
-
+            return (Manufacturer)GetEntity(id);
         }
 
         [HttpPost]
-        public IActionResult Create([FromBody] Vehicle entity)
+        public IActionResult Create([FromBody] Manufacturer entity)
         {
             return CreateEntity(entity);
         }
 
         [HttpPut]
-        public IActionResult Edit([FromBody] Vehicle entity)
+        public IActionResult Edit([FromBody] Manufacturer entity)
         {
             return UpdateEntity(entity);
         }
+
     }
 }

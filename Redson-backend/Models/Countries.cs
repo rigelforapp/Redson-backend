@@ -15,7 +15,7 @@ namespace Redson_backend.Models
     {
         public Country()
         {
-            //Currencies = new HashSet<Currency>();
+            Currencies = new HashSet<Currency>();
         }
 
         /*[Key]
@@ -28,13 +28,13 @@ namespace Redson_backend.Models
         [StringLength(255)]
         public string Name { get; set; }
 
-        /*[ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.CountryCreatedBies))]
+        [ForeignKey(nameof(CreatedById))]
+        [InverseProperty(nameof(User.CountryCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.CountryUpdatedBies))]
+        [InverseProperty(nameof(User.CountryUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(Currency.Country))]
-        public virtual ICollection<Currency> Currencies { get; set; }*/
+        public virtual ICollection<Currency> Currencies { get; set; }
     }
 }

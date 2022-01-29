@@ -16,8 +16,8 @@ namespace Redson_backend.Models
     {
         public Group()
         {
-            /*Contacts = new HashSet<Contact>();
-            Vehicles = new HashSet<Vehicle>();*/
+            Contacts = new HashSet<Contact>();
+            Vehicles = new HashSet<Vehicle>();
         }
 
         /*[Key]
@@ -38,8 +38,8 @@ namespace Redson_backend.Models
         [Column("parent_group_id")]
         public int? ParentGroupId { get; set; }
 
-        /*[ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.GroupCreatedBies))]
+        [ForeignKey(nameof(CreatedById))]
+        [InverseProperty(nameof(User.GroupCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(OrganizationId))]
         [InverseProperty("Groups")]
@@ -48,11 +48,11 @@ namespace Redson_backend.Models
         [InverseProperty("Groups")]
         public virtual Type Type { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.GroupUpdatedBies))]
+        [InverseProperty(nameof(User.GroupUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(Contact.Group))]
         public virtual ICollection<Contact> Contacts { get; set; }
         [InverseProperty(nameof(Vehicle.Group))]
-        public virtual ICollection<Vehicle> Vehicles { get; set; }*/
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

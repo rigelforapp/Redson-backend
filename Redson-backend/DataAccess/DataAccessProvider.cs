@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Linq;
 using Redson_backend.Models;
+using System.Web;
+using System.Reflection;
+using Microsoft.EntityFrameworkCore;
 
 namespace Redson_backend.DataAccess
 {
@@ -15,6 +18,7 @@ namespace Redson_backend.DataAccess
         {
             _context = context;
             _scontext = context;
+            _context.ChangeTracker.LazyLoadingEnabled = false;
             dapp = new DataAccessProvidesParameters();
         }
 
@@ -25,9 +29,60 @@ namespace Redson_backend.DataAccess
 
         public bool WhereBaseQuery(Base objt)
         {
-            var account_propery = objt.GetType().GetProperty("AccountId");
+            //var account_propery = objt.GetType().GetProperty("AccountId");
             //return objt.IsDeleted == false;
-            return (int)account_propery.GetValue(objt, null) == dapp.AccountId;
+            //return (int)account_propery.GetValue(objt, null) == dapp.AccountId;
+
+            var itsAcceptableCondition = true;
+
+            if (dapp.q == "")
+            {
+                for (int i = 0; i < dapp.PropName.Length; i++)
+                {
+                    var propNameAux = char.ToUpper(dapp.PropName[i][0]) + dapp.PropName[i].Substring(1);
+                    var propName = objt.GetType().GetProperty(propNameAux);
+
+                    if (propName != null)
+                    {
+                        var value = propName.GetValue(objt);
+
+                        if (value != null)
+                        {
+                            value = value.ToString();
+                            var queryStringValue = System.Web.HttpUtility.UrlDecode(dapp.PropValue[i]);
+                            itsAcceptableCondition &= value.Equals(queryStringValue);
+                        }
+                        else {
+                            itsAcceptableCondition = false;
+                        }
+                    }
+
+                }
+            }
+            else {
+                itsAcceptableCondition = false;
+                foreach (PropertyInfo propertyInfo in objt.GetType().GetProperties())
+                {
+                    if (propertyInfo.PropertyType.Name == "String")
+                    {
+                        var propertyValue = propertyInfo.GetValue(objt);
+                        if (propertyValue!=null)
+                        {
+                            itsAcceptableCondition = propertyValue.ToString().ToLower().Contains(dapp.q);
+
+                            if(itsAcceptableCondition)
+                            {
+                                break;
+                            }
+                        }
+                        
+                    }
+                }
+            }
+
+            
+
+            return itsAcceptableCondition;
         }
 
         #region Account
@@ -68,7 +123,7 @@ namespace Redson_backend.DataAccess
         public List<Country> GetCountryRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.country.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.country.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Country GetCountryRecord(int Id)
@@ -101,7 +156,7 @@ namespace Redson_backend.DataAccess
         public List<Category> GetCategoryRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.category.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.category.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Category GetCategoryRecord(int Id)
@@ -134,7 +189,7 @@ namespace Redson_backend.DataAccess
         public List<Comment> GetCommentRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.comment.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.comment.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Comment GetCommentRecord(int Id)
@@ -167,12 +222,22 @@ namespace Redson_backend.DataAccess
         public List<Contact> GetContactRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.contact.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.contact
+                .Include( c => c.Photo )
+                .Include( c => c.Organization )
+                .Include( c => c.Organization.Photo )
+                .Include( c => c.OwnerId )
+                .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Contact GetContactRecord(int Id)
         {
-            return _context.contact.FirstOrDefault(t => t.Id == Id);
+            return _context.contact
+                .Include(c => c.Photo)
+                .Include(c => c.Organization)
+                .Include(c => c.Organization.Photo)
+                .Include(c => c.OwnerId)
+                .FirstOrDefault(t => t.Id == Id);
         }
 
         public void AddContactRecord(Contact contact)
@@ -200,7 +265,7 @@ namespace Redson_backend.DataAccess
         public List<Currency> GetCurrencyRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.currency.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.currency.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Currency GetCurrencyRecord(int Id)
@@ -233,7 +298,7 @@ namespace Redson_backend.DataAccess
         public List<File> GetFileRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.file.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.file.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public File GetFileRecord(int Id)
@@ -266,7 +331,7 @@ namespace Redson_backend.DataAccess
         public List<Group> GetGroupRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.group.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.group.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Group GetGroupRecord(int Id)
@@ -327,12 +392,45 @@ namespace Redson_backend.DataAccess
 
         #endregion Location
 
+        #region Manufacturer
+
+        public List<Manufacturer> GetManufacturerRecords(DataAccessProvidesParameters dapp)
+        {
+            this.dapp = dapp;
+            return _context.manufacturer.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+        }
+
+        public Manufacturer GetManufacturerRecord(int Id)
+        {
+            return _context.manufacturer.FirstOrDefault(t => t.Id == Id);
+        }
+
+        public void AddManufacturerRecord(Manufacturer manufacturer)
+        {
+            _context.manufacturer.Add(manufacturer);
+            _context.SaveChanges();
+        }
+
+        public void UpdateManufacturerRecord(Manufacturer manufacturer)
+        {
+            _context.manufacturer.Update(manufacturer);
+            _context.SaveChanges();
+        }
+        public void DeleteManufacturerRecord(int Id)
+        {
+            var entity = _context.manufacturer.FirstOrDefault(t => t.Id == Id);
+            _context.manufacturer.Remove(entity);
+            _context.SaveChanges();
+        }
+
+        #endregion Location
+
         #region OrderHistory
 
         public List<OrderHistory> GetOrderHistoryRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.orderHistory.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.orderHistory.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public OrderHistory GetOrderHistoryRecord(int Id)
@@ -365,7 +463,7 @@ namespace Redson_backend.DataAccess
         public List<OrderItem> GetOrderItemRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.orderItem.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.orderItem.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public OrderItem GetOrderItemRecord(int Id)
@@ -398,12 +496,32 @@ namespace Redson_backend.DataAccess
         public List<Order> GetOrderRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.order.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+
+            /*return _context.order
+                .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();*/
+
+            return _context.order
+                .Include(o => o.Organization)
+                .Include(o => o.Contact)
+                .Include(o => o.Vehicle)
+                .Include(o => o.Vehicle.Photo)
+                .Include(o => o.Owner)
+                .Include(o => o.Technician)
+                .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Order GetOrderRecord(int Id)
         {
-            return _context.order.FirstOrDefault(t => t.Id == Id);
+            return _context.order
+                .Include(o => o.Organization)
+                .Include(o => o.Contact)
+                .Include(o => o.Vehicle)
+                .Include(o => o.Vehicle.Photo)
+                .Include(o => o.Owner)
+                .Include(o => o.Technician)
+                .Include(o => o.OrderItems)
+                .Include(o => o.OrderItems.Select( oi => oi.Technician ))
+                .FirstOrDefault(t => t.Id == Id);
         }
 
         public void AddOrderRecord(Order order)
@@ -431,12 +549,20 @@ namespace Redson_backend.DataAccess
         public List<Organization> GetOrganizationRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.organization.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.organization
+                .Include( o => o.Type )
+                .Include( o => o.Photo )
+                .Include( o => o.Owner )
+                .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Organization GetOrganizationRecord(int Id)
         {
-            return _context.organization.FirstOrDefault(t => t.Id == Id);
+            return _context.organization
+                .Include(o => o.Type)
+                .Include(o => o.Photo)
+                .Include(o => o.Owner)
+                .FirstOrDefault(t => t.Id == Id);
         }
 
         public void AddOrganizationRecord(Organization organization)
@@ -464,7 +590,7 @@ namespace Redson_backend.DataAccess
         public List<PackageItem> GetPackageItemRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.packageItem.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.packageItem.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public PackageItem GetPackageItemRecord(int Id)
@@ -497,7 +623,7 @@ namespace Redson_backend.DataAccess
         public List<Package> GetPackageRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.package.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.package.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Package GetPackageRecord(int Id)
@@ -530,7 +656,7 @@ namespace Redson_backend.DataAccess
         public List<Product> GetProductRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.product.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.product.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Product GetProductRecord(int Id)
@@ -563,7 +689,7 @@ namespace Redson_backend.DataAccess
         public List<Role> GetRoleRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.role.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.role.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Role GetRoleRecord(int Id)
@@ -596,7 +722,7 @@ namespace Redson_backend.DataAccess
         public List<Task> GetTaskRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.task.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.task.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Task GetTaskRecord(int Id)
@@ -629,7 +755,7 @@ namespace Redson_backend.DataAccess
         public List<Redson_backend.Models.Type> GetTypeRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.type.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.type.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Redson_backend.Models.Type GetTypeRecord(int Id)
@@ -704,9 +830,9 @@ namespace Redson_backend.DataAccess
             return _context.userxrole.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
-        public UsersXRole GetUsersXRoleRecord(int UserId)
+        public UsersXRole GetUsersXRoleRecord(UsersXRole userXRol)
         {
-            return _context.userxrole.FirstOrDefault(t => t.UserId == UserId);
+            return _context.userxrole.FirstOrDefault( t => t.UserId == userXRol.UserId && t.RoleId == userXRol.RoleId && t.AccountId == userXRol.AccountId  );
         }
 
         public void AddUsersXRoleRecord(UsersXRole user)
@@ -715,9 +841,9 @@ namespace Redson_backend.DataAccess
             _context.SaveChanges();
         }
 
-        public void UpdateUsersXRoleRecord(UsersXRole user)
+        public void UpdateUsersXRoleRecord(UsersXRole userXRol)
         {
-            _context.userxrole.Update(user);
+            _context.userxrole.Update(userXRol);
             _context.SaveChanges();
         }
 
@@ -735,12 +861,54 @@ namespace Redson_backend.DataAccess
         public List<Vehicle> GetVehicleRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.vehicle.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.vehicle
+                .Include(v => v.Photo)
+                .Include(v => v.Group)
+                .Include(v => v.VehicleModel)
+                .Include(v => v.Type)
+                .Include(v => v.Organization)
+                .Include(v => v.Organization.Photo)
+                .Include(v => v.Contact)
+                .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public Vehicle GetVehicleRecord(int Id)
         {
-            return _context.vehicle.FirstOrDefault(t => t.Id == Id);
+            var vehicle = _context.vehicle
+                .Include(v => v.Photo)
+                .Include(v => v.Group)
+                .Include(v => v.VehicleModel)
+                .Include(v => v.Type)
+                .Include(v => v.Organization)
+                .Include(v => v.Contact)
+                .Include(v => v.Orders)
+                .FirstOrDefault(t => t.Id == Id);
+
+            
+
+            dapp = new DataAccessProvidesParameters();
+
+            Array.Resize(ref dapp.PropName, dapp.PropName.Length + 1);
+            dapp.PropName[dapp.PropName.GetUpperBound(0)] = "parentType";
+
+            Array.Resize(ref dapp.PropValue, dapp.PropValue.Length + 1);
+            dapp.PropValue[dapp.PropValue.GetUpperBound(0)] = "vehicle";
+
+            Array.Resize(ref dapp.PropName, dapp.PropName.Length + 1);
+            dapp.PropName[dapp.PropName.GetUpperBound(0)] = "parentId";
+
+            Array.Resize(ref dapp.PropValue, dapp.PropValue.Length + 1);
+            dapp.PropValue[dapp.PropValue.GetUpperBound(0)] = vehicle.Id.ToString();
+
+            // Tasks
+
+            vehicle.Tasks = GetTaskRecords(dapp);
+
+            // Files
+
+            vehicle.Files = GetFileRecords(dapp);
+
+            return vehicle;
         }
 
         public void AddVehicleRecord(Vehicle vehicle)
@@ -768,7 +936,7 @@ namespace Redson_backend.DataAccess
         public List<VehicleModel> GetVehicleModelRecords(DataAccessProvidesParameters dapp)
         {
             this.dapp = dapp;
-            return _context.vehicleModel.Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
+            return _context.vehicleModel.Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
         public VehicleModel GetVehicleModelRecord(int Id)
@@ -806,5 +974,17 @@ namespace Redson_backend.DataAccess
 
         // Account ID
         public int AccountId = 0;
+
+        // Search by property
+        public string[] PropName;
+        public string[] PropValue;
+
+        // Search by q
+        public string q = "";
+
+        public DataAccessProvidesParameters() {
+            PropName = new string[0];
+            PropValue = new string[0];
+        }
     }
 }

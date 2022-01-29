@@ -11,15 +11,14 @@ namespace Redson_backend.Models
     [Table("manufacturers")]
     public partial class Manufacturer : Base
     {
+
+        
         public Manufacturer()
         {
-            /*Products = new HashSet<Product>();
-            VehicleModels = new HashSet<VehicleModel>();*/
+            Products = new HashSet<Product>();
+            VehicleModels = new HashSet<VehicleModel>();
         }
 
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -32,12 +31,12 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(TypeId))]
+        [ForeignKey(nameof(TypeId))]
         [InverseProperty("Manufacturers")]
         public virtual Type Type { get; set; }
         [InverseProperty(nameof(Product.Manufacturer))]
         public virtual ICollection<Product> Products { get; set; }
         [InverseProperty(nameof(VehicleModel.Manufacturer))]
-        public virtual ICollection<VehicleModel> VehicleModels { get; set; }*/
+        public virtual ICollection<VehicleModel> VehicleModels { get; set; }
     }
 }

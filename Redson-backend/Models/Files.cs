@@ -13,9 +13,11 @@ namespace Redson_backend.Models
     {
         public File()
         {
-            /*Accounts = new HashSet<Account>();
+            Accounts = new HashSet<Account>();
+            Organizations = new HashSet<Organization>();
             CommentsXFiles = new HashSet<CommentsXFile>();
-            Contacts = new HashSet<Contact>();*/
+            Contacts = new HashSet<Contact>();
+            Vehicles = new HashSet<Vehicle>();
         }
 
         /*[Key]
@@ -30,10 +32,8 @@ namespace Redson_backend.Models
         [Column("size")]
         public short? Size { get; set; }
         [Column("content_url")]
-        [StringLength(255)]
         public string ContentUrl { get; set; }
         [Column("thumbnail_url")]
-        [StringLength(255)]
         public string ThumbnailUrl { get; set; }
         [Column("description")]
         [StringLength(255)]
@@ -47,12 +47,23 @@ namespace Redson_backend.Models
         [Column("parent_type")]
         [StringLength(20)]
         public string ParentType { get; set; }
+        [Column("as3_key")]
+        [StringLength(512)]
+        public string As3Key { get; set; }
 
-        /*[InverseProperty(nameof(Account.Photo))]
+        [InverseProperty(nameof(Account.Photo))]
         public virtual ICollection<Account> Accounts { get; set; }
+        
+        [InverseProperty(nameof(Organization.Photo))]
+        public virtual ICollection<Organization> Organizations { get; set; }
+        
         [InverseProperty(nameof(CommentsXFile.File))]
         public virtual ICollection<CommentsXFile> CommentsXFiles { get; set; }
+
         [InverseProperty(nameof(Contact.Photo))]
-        public virtual ICollection<Contact> Contacts { get; set; }*/
+        public virtual ICollection<Contact> Contacts { get; set; }
+
+        [InverseProperty(nameof(Vehicle.Photo))]
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }

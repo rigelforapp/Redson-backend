@@ -102,8 +102,7 @@ namespace Redson_backend.Controllers
             }
             catch (Exception ex)
             {
-                Problem(ex.Message);
-                throw;
+                return Problem(ex.Message + "-" + ex.StackTrace);
             }
 
         }

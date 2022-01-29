@@ -27,25 +27,38 @@ namespace Redson_backend.Controllers
             return (List<UsersXRole>)GetAllEntities();
         }
 
-        [HttpGet("{id}")]
+        /*[HttpGet("{id}")]
         public UsersXRole Details(int id)
         {
-            //return (UsersXRole)GetEntity(id);
+            return (UsersXRole)GetEntity(id);
             return null;
-        }
+        }*/
 
         [HttpPost]
         public IActionResult Create([FromBody] UsersXRole entity)
         {
-            //return CreateEntity(entity);
-            return null;
+            return CreateEntity(entity);
+        }
+
+        protected override EntityBaseNoId beforeCreate(EntityBaseNoId entity)
+        {
+            var usersXRole = (UsersXRole)entity;
+            var usersXRoles = _dataAccessProvider
+                                .GetUsersXRoleRecords(new DataAccessProvidesParameters())
+                                .Where(uxr => uxr.UserId == usersXRole.UserId).ToList();
+
+            foreach (var uxr in usersXRoles)
+            {
+                uxr.IsSelected = false;
+            }
+
+            return usersXRole;
         }
 
         [HttpPut]
         public IActionResult Edit([FromBody] UsersXRole entity)
         {
-            //return UpdateEntity(entity);
-            return null;
+            return UpdateEntity(entity);
         }
 
     }

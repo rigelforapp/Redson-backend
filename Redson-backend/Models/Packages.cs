@@ -16,12 +16,9 @@ namespace Redson_backend.Models
     {
         public Package()
         {
-            //PackageItems = new HashSet<PackageItem>();
+            PackageItems = new HashSet<PackageItem>();
         }
 
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("number")]
         [StringLength(255)]
         public string Number { get; set; }
@@ -33,16 +30,16 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(AccountId))]
+        [ForeignKey(nameof(AccountId))]
         [InverseProperty("Packages")]
         public virtual Account Account { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.PackageCreatedBies))]
+        [InverseProperty(nameof(User.PackageCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.PackageUpdatedBies))]
+        [InverseProperty(nameof(User.PackageUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(PackageItem.Package))]
-        public virtual ICollection<PackageItem> PackageItems { get; set; }*/
+        public virtual ICollection<PackageItem> PackageItems { get; set; }
     }
 }

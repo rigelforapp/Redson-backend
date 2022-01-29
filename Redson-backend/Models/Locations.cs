@@ -16,8 +16,8 @@ namespace Redson_backend.Models
     {
         public Location()
         {
-            //InverseParentLocation = new HashSet<Location>();
-            //Orders = new HashSet<Order>();
+            InverseParentLocation = new HashSet<Location>();
+            Orders = new HashSet<Order>();
         }
 
         /*[Key]
@@ -39,21 +39,26 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(AccountId))]
+        [ForeignKey(nameof(AccountId))]
         [InverseProperty("Locations")]
         public virtual Account Account { get; set; }
+        
         [ForeignKey(nameof(CreatedById))]
         [InverseProperty(nameof(User.LocationCreatedBies))]
         public virtual User CreatedBy { get; set; }
+        
         [ForeignKey(nameof(ParentLocationId))]
         [InverseProperty(nameof(Location.InverseParentLocation))]
         public virtual Location ParentLocation { get; set; }
-        //[ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.LocationUpdatedBies))]
-        //public virtual User UpdatedBy { get; set; }
+       
+        [ForeignKey(nameof(UpdatedById))]
+        [InverseProperty(nameof(User.LocationUpdatedBies))]
+        public virtual User UpdatedBy { get; set; }
+       
         [InverseProperty(nameof(Location.ParentLocation))]
         public virtual ICollection<Location> InverseParentLocation { get; set; }
+        
         [InverseProperty(nameof(Order.Location))]
-        public virtual ICollection<Order> Orders { get; set; }*/
+        public virtual ICollection<Order> Orders { get; set; }
     }
 }

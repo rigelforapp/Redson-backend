@@ -16,13 +16,10 @@ namespace Redson_backend.Models
     {
         public Product()
         {
-            /*OrderItems = new HashSet<OrderItem>();
-            PackageItems = new HashSet<PackageItem>();*/
+            OrderItems = new HashSet<OrderItem>();
+            PackageItems = new HashSet<PackageItem>();
         }
 
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("number")]
         [StringLength(50)]
         public string Number { get; set; }
@@ -96,14 +93,14 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(AccountId))]
+        [ForeignKey(nameof(AccountId))]
         [InverseProperty("Products")]
         public virtual Account Account { get; set; }
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Products")]
         public virtual Category Category { get; set; }
         [ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.ProductCreatedBies))]
+        [InverseProperty(nameof(User.ProductCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(ManufacturerId))]
         [InverseProperty("Products")]
@@ -112,11 +109,11 @@ namespace Redson_backend.Models
         [InverseProperty("Products")]
         public virtual Type Type { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.ProductUpdatedBies))]
+        [InverseProperty(nameof(User.ProductUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
         [InverseProperty(nameof(OrderItem.Product))]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
         [InverseProperty(nameof(PackageItem.Product))]
-        public virtual ICollection<PackageItem> PackageItems { get; set; }*/
+        public virtual ICollection<PackageItem> PackageItems { get; set; }
     }
 }

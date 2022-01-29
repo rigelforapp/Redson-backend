@@ -15,9 +15,6 @@ namespace Redson_backend.Models
     [Index(nameof(UpdatedById), Name = "ix_package_items_updated_by_id")]
     public partial class PackageItem : Base
     {
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("package_id")]
         public int? PackageId { get; set; }
         [Column("name")]
@@ -49,8 +46,8 @@ namespace Redson_backend.Models
         [Column("is_separator")]
         public bool? IsSeparator { get; set; }
 
-        /*[ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.PackageItemCreatedBies))]
+        [ForeignKey(nameof(CreatedById))]
+        [InverseProperty(nameof(User.PackageItemCreatedBies))]
         public virtual User CreatedBy { get; set; }
         [ForeignKey(nameof(PackageId))]
         [InverseProperty("PackageItems")]
@@ -59,7 +56,7 @@ namespace Redson_backend.Models
         [InverseProperty("PackageItems")]
         public virtual Product Product { get; set; }
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.PackageItemUpdatedBies))]
-        public virtual User UpdatedBy { get; set; }*/
+        [InverseProperty(nameof(User.PackageItemUpdatedBies))]
+        public virtual User UpdatedBy { get; set; }
     }
 }

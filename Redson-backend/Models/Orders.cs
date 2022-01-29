@@ -17,17 +17,18 @@ namespace Redson_backend.Models
     [Index(nameof(VehicleId), Name = "ix_orders_vehicle_id")]
     public partial class Order : Base
     {
+        public Account Account { get; set; }
+        public Order ParentOrder { get; set; }
+
         public Order()
         {
-            /*Comments = new HashSet<Comment>();
+            Comments = new HashSet<Comment>();
             OrderHistories = new HashSet<OrderHistory>();
             OrderItems = new HashSet<OrderItem>();
-            Tasks = new HashSet<Task>();*/
+            Tasks = new HashSet<Task>();
+            //Organization = new Organization();
         }
 
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("number")]
         [StringLength(50)]
         public string Number { get; set; }
@@ -111,43 +112,56 @@ namespace Redson_backend.Models
         [StringLength(255)]
         public string Token { get; set; }
 
-        /*ForeignKey(nameof(ContactId))]
+        [ForeignKey(nameof(ContactId))]
         [InverseProperty("Orders")]
         public virtual Contact Contact { get; set; }
+        
         [ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.OrderCreatedBies))]
+        [InverseProperty(nameof(User.OrderCreatedBies))]
         public virtual User CreatedBy { get; set; }
+        
         [ForeignKey(nameof(CurrencyId))]
         [InverseProperty("Orders")]
         public virtual Currency Currency { get; set; }
+        
         [ForeignKey(nameof(LocationId))]
         [InverseProperty("Orders")]
         public virtual Location Location { get; set; }
+        
         [ForeignKey(nameof(OrganizationId))]
         [InverseProperty("Orders")]
         public virtual Organization Organization { get; set; }
+        
         [ForeignKey(nameof(OwnerId))]
-        //[InverseProperty(nameof(User.OrderOwners))]
+        [InverseProperty(nameof(User.OrderOwners))]
         public virtual User Owner { get; set; }
+        
         [ForeignKey(nameof(TechnicianId))]
-        //[InverseProperty(nameof(User.OrderTechnicians))]
+        [InverseProperty(nameof(User.OrderTechnicians))]
         public virtual User Technician { get; set; }
+        
         [ForeignKey(nameof(TypeId))]
         [InverseProperty("Orders")]
         public virtual Type Type { get; set; }
+        
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.OrderUpdatedBies))]
+        [InverseProperty(nameof(User.OrderUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
+        
         [ForeignKey(nameof(VehicleId))]
         [InverseProperty("Orders")]
         public virtual Vehicle Vehicle { get; set; }
+        
         [InverseProperty(nameof(Comment.Order))]
         public virtual ICollection<Comment> Comments { get; set; }
+        
         [InverseProperty(nameof(OrderHistory.Order))]
         public virtual ICollection<OrderHistory> OrderHistories { get; set; }
+        
         [InverseProperty(nameof(OrderItem.Order))]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+
         [InverseProperty(nameof(Task.EntityNavigation))]
-        public virtual ICollection<Task> Tasks { get; set; }*/
+        public virtual ICollection<Task> Tasks { get; set; }
     }
 }

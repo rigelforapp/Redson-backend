@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using Redson_backend.Models;
+using System.Data;
 
 namespace Redson_backend.DataAccess
 {
@@ -12,6 +13,8 @@ namespace Redson_backend.DataAccess
 
         public PostgreSqlContext(DbContextOptions<PostgreSqlContext> options) : base(options)
         {
+            this.ChangeTracker.LazyLoadingEnabled = false;
+            this.ChangeTracker.QueryTrackingBehavior = QueryTrackingBehavior.NoTracking;
         }
 
         public DbSet<Account> account { get; set; }
@@ -23,6 +26,7 @@ namespace Redson_backend.DataAccess
         public DbSet<File> file { get; set; }
         public DbSet<Group> group { get; set; }
         public DbSet<Location> location { get; set; }
+        public DbSet<Manufacturer> manufacturer { get; set; }
         public DbSet<OrderHistory> orderHistory { get; set; }
         public DbSet<OrderItem> orderItem { get; set; }
         public DbSet<Order> order { get; set; }
@@ -41,6 +45,7 @@ namespace Redson_backend.DataAccess
 
         protected override void OnModelCreating(ModelBuilder builder)
         {
+            
             base.OnModelCreating(builder);
             builder.Entity<UsersXRole>()
                 .HasKey(e => new { e.RoleId, e.UserId, e.AccountId });

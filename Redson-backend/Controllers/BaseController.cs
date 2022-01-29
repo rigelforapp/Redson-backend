@@ -19,6 +19,7 @@ namespace Redson_backend.Controllers
 
         public IDataAccessProvider _dataAccessProvider;
 
+        #region GetAll
         protected Object GetAllEntities()
         {
             User logedUser = GetUserByToken();
@@ -34,9 +35,19 @@ namespace Redson_backend.Controllers
             MethodInfo GetRecordsMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Records");
 
             DataAccessProvidesParameters dapp = GetParameters(logedUser);
-            return GetRecordsMethod.Invoke(_dataAccessProvider, new object[] { dapp });
+            var entityList  = GetRecordsMethod.Invoke(_dataAccessProvider, new object[] { dapp });
+            entityList      = this.afterGetAll(entityList);
+            return entityList;
         }
 
+        protected virtual Object afterGetAll(Object entityList)
+        {
+            return entityList;
+        }
+
+        #endregion
+
+        #region Get
         protected Base GetEntity(int id)
         {
             User logedUser = GetUserByToken();
@@ -46,24 +57,34 @@ namespace Redson_backend.Controllers
                 return null;
             }
 
-            var context = _dataAccessProvider.GetContext();
-
             System.Type dataAccessProviderType = _dataAccessProvider.GetType();
             MethodInfo getRecordsMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Record");
 
-            var entity = getRecordsMethod.Invoke(_dataAccessProvider, new object[] { id });
+
+            var entity = (EntityBaseNoId)getRecordsMethod.Invoke(_dataAccessProvider, new object[] { id });
+            entity = this.afterGet(entity);
 
             return (Base)entity;
         }
 
-        protected IActionResult CreateEntity(Base baseObj)
+        protected virtual EntityBaseNoId afterGet(EntityBaseNoId entity)
+        {
+            return entity;
+        }
+
+        #endregion
+
+        #region Create
+        protected IActionResult CreateEntity(EntityBaseNoId baseObj)
         {
             User logedUser = GetUserByToken();
 
             if (logedUser == null)
             {
-                return null;
+                return Unauthorized("User not found. The user token wasn't matched.");
             }
+
+            var dapp = GetParameters(logedUser);
 
             if (
                 ModelState.IsValid &&
@@ -80,19 +101,48 @@ namespace Redson_backend.Controllers
                 System.Type dataAccessProviderType = _dataAccessProvider.GetType();
                 MethodInfo createRecordMethod = dataAccessProviderType.GetMethod("Add" + this.entityType + "Record");
 
-                createRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj });
-                return Ok(baseObj);
+
+                try
+                {
+                    baseObj = this.beforeCreate(baseObj);
+                    createRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj });
+                    baseObj = this.afterCreate(baseObj);
+                    return Ok(baseObj);
+                }
+                catch (Exception ex)
+                {
+                    var response = new BadResponse();
+                    response.Message = ex.InnerException.InnerException.Message;
+                    response.Trace = ex.InnerException.StackTrace;
+                    response.Exception = ex;
+
+                    return BadRequest(response);
+                }
+                
             }
             return BadRequest();
         }
 
-        protected IActionResult UpdateEntity(Base baseObj)
+        protected virtual EntityBaseNoId beforeCreate(EntityBaseNoId entity)
+        {
+            return entity;
+        }
+
+        protected virtual EntityBaseNoId afterCreate(EntityBaseNoId entity)
+        {
+            return entity;
+        }
+
+        #endregion
+
+        #region Update
+        protected IActionResult UpdateEntity(EntityBaseNoId baseObj)
         {
             User logedUser = GetUserByToken();
 
             if (logedUser == null)
             {
-                return null;
+                return Unauthorized("User not found. The user token wasn't matched.");
             }
 
             if (
@@ -107,20 +157,53 @@ namespace Redson_backend.Controllers
                 MethodInfo updateRecordMethod = dataAccessProviderType.GetMethod("Update" + this.entityType + "Record");
                 MethodInfo getRecordMethod = dataAccessProviderType.GetMethod("Get" + this.entityType + "Record");
 
-                object lastBaseObj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj.Id });
-                var lastBaseObjCasted = CastType(lastBaseObj);
+                var IdProperty = baseObj.GetType().GetProperty("Id");
+                var lastBaseObjCasted = baseObj;
+                object lastBaseObj;
 
+                if (IdProperty != null)
+                {
+                    lastBaseObj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { IdProperty.GetValue(baseObj) });
+                }
+                else {
+                    lastBaseObj = getRecordMethod.Invoke(_dataAccessProvider, new object[] { baseObj });
+                }
+
+                lastBaseObjCasted = CastType(lastBaseObj);
                 lastBaseObjCasted = CopyValues(lastBaseObjCasted, baseObj);
-                //lastBaseObjCasted = baseObj;
 
-                
-                updateRecordMethod.Invoke(_dataAccessProvider, new object[] { lastBaseObjCasted });
+                try
+                {
+                    lastBaseObjCasted = this.beforeUpdate(lastBaseObjCasted );
+                    updateRecordMethod.Invoke(_dataAccessProvider, new object[] { lastBaseObjCasted });
+                    lastBaseObjCasted = this.afterUpdate(lastBaseObjCasted);
+                    return Ok(lastBaseObjCasted);
+                }
+                catch (Exception ex)
+                {
+                    var response = new BadResponse();
+                    response.Message = ex.InnerException.InnerException.Message;
+                    response.Trace = ex.InnerException.StackTrace;
+                    response.Exception = ex;
 
-                return Ok();
+                    return BadRequest(response);
+                }
             }
             return BadRequest();
         }
-        
+
+        protected virtual EntityBaseNoId beforeUpdate(EntityBaseNoId entity)
+        {
+            return entity;
+        }
+
+        protected virtual EntityBaseNoId afterUpdate(EntityBaseNoId entity)
+        {
+            return entity;
+        }
+
+        #endregion
+
         [HttpDelete("{id}")]
         public IActionResult DeleteLogicalEntity(int id)
         {
@@ -128,7 +211,7 @@ namespace Redson_backend.Controllers
 
             if (logedUser == null)
             {
-                return null;
+                return Unauthorized("User not found. The user token wasn't matched.");
             }
 
             System.Type dataAccessProviderType = _dataAccessProvider.GetType();
@@ -137,7 +220,6 @@ namespace Redson_backend.Controllers
 
             var objCasted = this.CastType(obj);
 
-            //var account = _dataAccessProvider.GetAccountRecord(id);
             if (objCasted == null)
             {
                 return NotFound();
@@ -154,7 +236,7 @@ namespace Redson_backend.Controllers
             return Ok();
         }
         
-        private Base CastType(object obj)
+        private EntityBaseNoId CastType(object obj)
         {
             switch (this.entityType)
             {
@@ -198,6 +280,8 @@ namespace Redson_backend.Controllers
                     return (Models.Type)obj;
                 case "User":
                     return (User)obj;
+                case "UsersXRole":
+                    return (UsersXRole)obj;
                 case "Vehicle":
                     return (Vehicle)obj;
                 case "VehicleModel":
@@ -207,7 +291,7 @@ namespace Redson_backend.Controllers
             return null;
         }
 
-        protected bool ValidateBaseParameters(Base entity)
+        protected bool ValidateBaseParameters(EntityBaseNoId entity)
         {
             if (
                 entity.CreatedAt != null ||
@@ -224,7 +308,7 @@ namespace Redson_backend.Controllers
 
         protected T CopyValues<T>(T target, T source)
         {
-            System.Type t = typeof(Base);
+            System.Type t = typeof(EntityBaseNoId);
             switch (entityType)
             {
                 case "Account":
@@ -287,6 +371,9 @@ namespace Redson_backend.Controllers
                 case "User":
                     t = typeof(User);
                     break;
+                case "UsersXRole":
+                    t = typeof(UsersXRole);
+                    break;
                 case "Vehicle":
                     t = typeof(Vehicle);
                     break;
@@ -334,7 +421,7 @@ namespace Redson_backend.Controllers
                 var auth_value_parts = auth_value.Split(" ");
                 if (auth_value_parts.Count() == 2)
                 {
-                    if (auth_value_parts[0] == "bearer")
+                    if (auth_value_parts[0].ToLower() == "bearer")
                     {
                         var token = auth_value_parts[1];
                         var context = _dataAccessProvider.GetContext();
@@ -375,7 +462,16 @@ namespace Redson_backend.Controllers
                         case "size":
                             dapp.PageSize = int.Parse(paramValue);
                             break;
+                        case "q":
+                            dapp.q = System.Web.HttpUtility.UrlDecode(paramValue).ToLower();
+                            break;
                         default:
+                            // Push Prop
+                            Array.Resize(ref dapp.PropName, dapp.PropName.Length + 1);
+                            dapp.PropName[dapp.PropName.GetUpperBound(0)] = paramKey;
+                            // Push Value
+                            Array.Resize(ref dapp.PropValue, dapp.PropValue.Length + 1);
+                            dapp.PropValue[dapp.PropValue.GetUpperBound(0)] = paramValue;
                             break;
                     }
                 }

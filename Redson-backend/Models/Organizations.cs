@@ -16,16 +16,13 @@ namespace Redson_backend.Models
     {
         public Organization()
         {
-            /*Contacts = new HashSet<Contact>();
+            Contacts = new HashSet<Contact>();
             Groups = new HashSet<Group>();
             OrderItems = new HashSet<OrderItem>();
             Orders = new HashSet<Order>();
-            Vehicles = new HashSet<Vehicle>();*/
+            Vehicles = new HashSet<Vehicle>();
         }
 
-        [Key]
-        [Column("id")]
-        public int? Id { get; set; } = null;
         [Column("name")]
         [StringLength(255)]
         public string Name { get; set; }
@@ -105,27 +102,46 @@ namespace Redson_backend.Models
         [Column("account_id")]
         public int? AccountId { get; set; }
 
-        /*[ForeignKey(nameof(AccountId))]
+        
+
+
+        [ForeignKey(nameof(AccountId))]
         [InverseProperty("Organizations")]
         public virtual Account Account { get; set; }
+        
         [ForeignKey(nameof(CategoryId))]
         [InverseProperty("Organizations")]
         public virtual Category Category { get; set; }
+
+        [ForeignKey(nameof(PhotoId))]
+        [InverseProperty(nameof(File.Organizations))]
+        public virtual File Photo { get; set; }
+
+        [ForeignKey(nameof(OwnerId))]
+        [InverseProperty(nameof(User.Organizations))]
+        public virtual User Owner { get; set; }
+
         [ForeignKey(nameof(CreatedById))]
-        //[InverseProperty(nameof(User.OrganizationCreatedBies))]
+        [InverseProperty(nameof(User.OrganizationCreatedBies))]
         public virtual User CreatedBy { get; set; }
+        
         [ForeignKey(nameof(UpdatedById))]
-        //[InverseProperty(nameof(User.OrganizationUpdatedBies))]
+        [InverseProperty(nameof(User.OrganizationUpdatedBies))]
         public virtual User UpdatedBy { get; set; }
+
         [InverseProperty(nameof(Contact.Organization))]
         public virtual ICollection<Contact> Contacts { get; set; }
+        
         [InverseProperty(nameof(Group.Organization))]
         public virtual ICollection<Group> Groups { get; set; }
+        
         [InverseProperty(nameof(OrderItem.ServicedBy))]
         public virtual ICollection<OrderItem> OrderItems { get; set; }
+        
         [InverseProperty(nameof(Order.Organization))]
         public virtual ICollection<Order> Orders { get; set; }
+        
         [InverseProperty(nameof(Vehicle.Organization))]
-        public virtual ICollection<Vehicle> Vehicles { get; set; }*/
+        public virtual ICollection<Vehicle> Vehicles { get; set; }
     }
 }
