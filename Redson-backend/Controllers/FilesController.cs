@@ -76,20 +76,27 @@ namespace Redson_backend.Controllers
             
             var redsonFile = new Redson_backend.Models.File();
 
-            foreach (var formFile in Request.Form.Files)
+            try
             {
-                if (formFile.Length > 0)
+                foreach (var formFile in Request.Form.Files)
                 {
-                    var s3Manager = new RedsonS3Manager();
-                    var key = s3Manager.Transfer(formFile);
+                    if (formFile.Length > 0)
+                    {
+                        var s3Manager = new RedsonS3Manager();
+                        var key = s3Manager.Transfer(formFile);
 
-                    redsonFile.Filename = formFile.FileName;
-                    redsonFile.Size = (short)(formFile.Length / 1024);
-                    redsonFile.MimeType = MimeTypes.GetMimeType(formFile.FileName);
-                    redsonFile.As3Key = key;
+                        redsonFile.Filename = formFile.FileName;
+                        redsonFile.Size = (short)(formFile.Length / 1024);
+                        redsonFile.MimeType = MimeTypes.GetMimeType(formFile.FileName);
+                        redsonFile.As3Key = key;
 
-                    redsonFile.ContentUrl = s3Manager.GetURL(key);
+                        redsonFile.ContentUrl = s3Manager.GetURL(key);
+                    }
                 }
+            }
+            catch (Exception)
+            {
+                return StatusCode(500);
             }
 
 

@@ -98,6 +98,15 @@ namespace Redson_backend.Controllers
                 baseObj.CreatedById = logedUser.Id;
                 baseObj.UpdatedById = logedUser.Id;
 
+                if (dapp.AccountId != 0)
+                {
+                    var accountProp = baseObj.GetType().GetProperty("AccountId");
+                    if (accountProp != null)
+                    {
+                        accountProp.SetValue(baseObj, dapp.AccountId);
+                    }
+                }
+
                 System.Type dataAccessProviderType = _dataAccessProvider.GetType();
                 MethodInfo createRecordMethod = dataAccessProviderType.GetMethod("Add" + this.entityType + "Record");
 

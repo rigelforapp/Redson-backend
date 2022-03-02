@@ -12,10 +12,10 @@ namespace Redson_backend.Controllers
     [Route("api/[controller]")]
     [ApiController]
 
-    public class ManufacturerController : GenericC
+    public class ManufacturersController : GenericC
     {
 
-        public ManufacturerController(IDataAccessProvider dataAccessProvider)
+        public ManufacturersController(IDataAccessProvider dataAccessProvider)
         {
             _dataAccessProvider = dataAccessProvider;
             this.entityType = "Manufacturer";

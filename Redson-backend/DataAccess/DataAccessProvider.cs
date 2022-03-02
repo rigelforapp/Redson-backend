@@ -35,6 +35,28 @@ namespace Redson_backend.DataAccess
 
             var itsAcceptableCondition = true;
 
+            // Filter by Account by Relationship User x Role
+            if (dapp.AccountId != 0)
+            {
+                var accountProp = objt.GetType().GetProperty("AccountId");
+                if (accountProp != null)
+                {
+                    var AccountId = accountProp.GetValue(objt);
+
+                    if (AccountId != null)
+                    {
+                        if (Int32.Parse(AccountId.ToString()) != dapp.AccountId)
+                        {
+                            return false;
+                        }
+                    }
+                    else {
+                        return false;
+                    }
+                    
+                }
+            }
+
             if (dapp.q == "")
             {
                 for (int i = 0; i < dapp.PropName.Length; i++)
@@ -226,7 +248,7 @@ namespace Redson_backend.DataAccess
                 .Include( c => c.Photo )
                 .Include( c => c.Organization )
                 .Include( c => c.Organization.Photo )
-                .Include( c => c.OwnerId )
+                .Include( c => c.Owner)
                 .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
         }
 
@@ -236,7 +258,7 @@ namespace Redson_backend.DataAccess
                 .Include(c => c.Photo)
                 .Include(c => c.Organization)
                 .Include(c => c.Organization.Photo)
-                .Include(c => c.OwnerId)
+                .Include(c => c.Owner)
                 .FirstOrDefault(t => t.Id == Id);
         }
 
@@ -520,7 +542,7 @@ namespace Redson_backend.DataAccess
                 .Include(o => o.Owner)
                 .Include(o => o.Technician)
                 .Include(o => o.OrderItems)
-                .Include(o => o.OrderItems.Select( oi => oi.Technician ))
+                .ThenInclude(oi => oi.Technician )
                 .FirstOrDefault(t => t.Id == Id);
         }
 
@@ -550,7 +572,6 @@ namespace Redson_backend.DataAccess
         {
             this.dapp = dapp;
             return _context.organization
-                .Include( o => o.Type )
                 .Include( o => o.Photo )
                 .Include( o => o.Owner )
                 .Where(WhereBaseQuery).Skip(dapp.PageSkip).Take(dapp.PageSize).ToList();
@@ -559,7 +580,6 @@ namespace Redson_backend.DataAccess
         public Organization GetOrganizationRecord(int Id)
         {
             return _context.organization
-                .Include(o => o.Type)
                 .Include(o => o.Photo)
                 .Include(o => o.Owner)
                 .FirstOrDefault(t => t.Id == Id);

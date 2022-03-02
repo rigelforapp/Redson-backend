@@ -33,9 +33,9 @@ namespace Redson_backend.Controllers
         [HttpGet("{id}")]
         public Order Details(int id)
         {
-            var order = (Order)GetEntity(id);
+            return (Order)GetEntity(id);
 
-            return this.LoadRelationship(order);
+            //return this.LoadRelationship(order);
         }
 
         [HttpPost]
@@ -108,7 +108,7 @@ namespace Redson_backend.Controllers
         }
 
         
-        [HttpGet("{OrderId}")]
+        [HttpGet("GetPDF/{OrderId}")]
         public IActionResult GetPDF()
         {
             PdfDocument pdf = PdfGenerator.GeneratePdf("<p><h1>Hello World</h1>This is html rendered text</p>", PageSize.A4);
